@@ -1,4 +1,4 @@
-package com.map.Vale.Ponto;
+package com.map.valeponto;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,0 +1,25 @@
+package com.map.Vale.Ponto.model.company;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+
+public class Company {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idCompany;
+    private String name;
+    private String cnpj;
+    private String address;
+    private String number;
+    private String city;
+    private String state;
+    private String email;
+}

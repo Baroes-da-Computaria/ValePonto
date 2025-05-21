@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     @GetMapping
-    public Product getProduct() {
-        return new Product(1L, "Produto 1", "Categoria 1", "Descrição do Produto 1", 10.0, "http://example.com/image1.jpg");
+    public String getProduct() {
+        return "Vamos ver se funciona bububu";
     }
 }

@@ -18,13 +18,15 @@ public class Product {
     private Long id;
     // em alguns projetos usa o tipo do id com UUID
     // todo: de alguma forma encaixar a ideia de subtitulo
-    // todo: colocar uma pontuacao conforme a logica que definimos de a cada 10 reais um ponto
-    // todo(opcional): colocar a chave estrangeira para a empresa para ter acesso a imagem da empresa conforme o figma
     private String name;
-
-    // todo: uma classe ou enum
     private String category;
     private String description;
     private Double price;
     private String imageURL;
+    private String subtitle;
+    private Integer points;
+
+    private Integer calculatePoints(){
+        return (int) (price / 10);
+    }
 }

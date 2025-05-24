@@ -15,8 +15,14 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long idTransaction;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "value")
     private Double value;
+
+
     private String date;
     private Long quantity;
     private Double pointsGenerated;

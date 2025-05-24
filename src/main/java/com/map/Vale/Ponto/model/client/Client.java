@@ -12,6 +12,7 @@ import lombok.*;
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "first_name", nullable = false)
@@ -39,5 +40,26 @@ public class Client {
         this.cpf = dto.getCpf();
         this.password = dto.getPassword();
         this.telefone = dto.getTelefone();
+    }
+
+    public void updateFromRequest(ClientRequestDTO dto) {
+        if (dto.getFirstName() != null) {
+            this.firstName = dto.getFirstName();
+        }
+        if (dto.getLastName() != null) {
+            this.lastName = dto.getLastName();
+        }
+        if (dto.getEmail() != null) {
+            this.email = dto.getEmail();
+        }
+        if (dto.getCpf() != null) {
+            this.cpf = dto.getCpf();
+        }
+        if (dto.getPassword() != null) {
+            this.password = dto.getPassword();
+        }
+        if (dto.getTelefone() != null) {
+            this.telefone = dto.getTelefone();
+        }
     }
 }

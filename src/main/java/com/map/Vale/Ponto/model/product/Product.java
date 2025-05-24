@@ -15,12 +15,14 @@ import lombok.Setter;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "category", nullable = false)
+    //@Enumerated(EnumType.STRING)
     private String category;
 
     @Column(name = "description", nullable = false)
@@ -39,7 +41,7 @@ public class Product {
     private Integer points;
 
     public Integer calculatePoints() {
-        return (int)(this.price * 0.1);
+        return (int) (this.price * 0.1);
     }
 
     public Product(ProductRequestDTO dto) {
@@ -53,12 +55,23 @@ public class Product {
     }
 
     public void updateFromRequest(ProductRequestDTO dto) {
-        this.setName(dto.getName());
-        this.setCategory(dto.getCategory());
-        this.setDescription(dto.getDescription());
-        this.setPrice(dto.getPrice());
-        this.setSubtitle(dto.getSubtitle());
-        this.setImageURL(dto.getImageURL());
-        this.setPoints(calculatePoints());
+        if (dto.getName() != null) {
+            this.setName(dto.getName());
+        }
+        if (dto.getCategory() != null) {
+            this.setCategory(dto.getCategory());
+        }
+        if (dto.getDescription() != null) {
+            this.setDescription(dto.getDescription());
+        }
+        if (dto.getPrice() != null) {
+            this.setPrice(dto.getPrice());
+        }
+        if (dto.getImageURL() != null) {
+            this.setImageURL(dto.getImageURL());
+        }
+        if (dto.getSubtitle() != null) {
+            this.setSubtitle(dto.getSubtitle());
+        }
     }
 }

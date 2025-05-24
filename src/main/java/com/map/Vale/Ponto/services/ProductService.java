@@ -7,22 +7,23 @@ import com.map.Vale.Ponto.model.product.ProductRequestDTO;
 import com.map.Vale.Ponto.model.product.ProductResponseDTO;
 import com.map.Vale.Ponto.repositories.ProductRepository;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ProductServices {
+public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductServices(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    public List<ProductResponseDTO> findAll(Pageable pageable) {
-        return productRepository.findAll(pageable).stream().map(ProductResponseDTO::new).toList();
+    public Page<ProductResponseDTO> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable).map(ProductResponseDTO::new);
     }
 
     public ProductResponseDTO findById(Long id) {

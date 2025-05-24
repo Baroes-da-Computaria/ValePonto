@@ -16,4 +16,5 @@ public class ProductRequestDTO {
     private String subtitle;
     private Double price;
     private String imageURL;
+
 }

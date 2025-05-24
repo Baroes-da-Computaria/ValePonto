@@ -2,61 +2,75 @@ package com.map.Vale.Ponto.controllers;
 
 import com.map.Vale.Ponto.model.product.ProductRequestDTO;
 import com.map.Vale.Ponto.model.product.ProductResponseDTO;
-import com.map.Vale.Ponto.services.ProductServices;
+import com.map.Vale.Ponto.services.ProductService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/valeponto/product")
 public class ProductController {
 
-    private final ProductServices productServices;
+    private final ProductService productService;
 
-    ProductController(ProductServices productServices) {
-        this.productServices = productServices;
+    ProductController(ProductService productServices) {
+        this.productService = productServices;
     }
 
-    @GetMapping(value = "/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ProductResponseDTO getProduct(@PathVariable("id") Long id) {
-        return productServices.findById(id);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<ProductResponseDTO> geById(@PathVariable("id") Long id) {
+
+        var response = productService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 
-    @GetMapping(
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ProductResponseDTO> getAllProducts(
+    @GetMapping
+    public ResponseEntity<Page<ProductResponseDTO>> getAll(
             @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize
     ) {
+
         // instancia do pageable para a busca paginada
         var pageable = PageRequest.of(pageNumber, pageSize);
-        return productServices.findAll(pageable);
+
+        // chama o service para a busca paginada
+        var page = productService.findAll(pageable);
+
+        // retorna a pagina de product response
+        return ResponseEntity.status(HttpStatus.OK).body(page);
+
     }
 
-    @PostMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ProductResponseDTO create(@RequestBody ProductRequestDTO dto) {
-        return productServices.save(dto);
+    @PostMapping
+    public ResponseEntity<ProductResponseDTO> create(@RequestBody ProductRequestDTO dto) {
+
+        var response = productService.save(dto);
+
+        // retorna o product response
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping(
-            value = "/{id}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            value = "/{id}"
     )
-    public ProductResponseDTO update(@PathVariable("id") Long id, @RequestBody ProductRequestDTO dto) {
-        return productServices.update(id, dto);
+    public ResponseEntity<ProductResponseDTO> update(@PathVariable("id") Long id, @RequestBody ProductRequestDTO dto) {
+
+        var response = productService.update(id, dto);
+        // retorna o curso response
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
-        productServices.delete(id);
-        return ResponseEntity.noContent().build();
+
+        // chama o service para deletar o product
+        productService.delete(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
     }
 }

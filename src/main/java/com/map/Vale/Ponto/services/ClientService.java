@@ -22,11 +22,6 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-    public Client create(ClientRequestDTO dto) {
-        Client client = new Client(dto);
-        return clientRepository.save(client);
-    }
-
     public ClientResponseDTO findById(Long id) {
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Client não encontrado com id: " + id));

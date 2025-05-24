@@ -37,4 +37,38 @@ public class Company {
 
     @Column(name = "email")
     private String email;
+
+    public Company(CompanyRequestDTO dto) {
+        this.name = dto.getName();
+        this.cnpj = dto.getCnpj();
+        this.address = dto.getAddress();
+        this.number = dto.getNumber();
+        this.city = dto.getCity();
+        this.state = dto.getState();
+        this.email = dto.getEmail();
+    }
+
+    public void updateFromRequest(CompanyRequestDTO dto) {
+        if (dto.getName() != null) {
+            this.name = dto.getName();
+        }
+        if (dto.getCnpj() != null) {
+            this.cnpj = dto.getCnpj();
+        }
+        if (dto.getAddress() != null) {
+            this.address = dto.getAddress();
+        }
+        if (dto.getNumber() != null) {
+            this.number = dto.getNumber();
+        }
+        if (dto.getCity() != null) {
+            this.city = dto.getCity();
+        }
+        if (dto.getState() != null) {
+            this.state = dto.getState();
+        }
+        if (dto.getEmail() != null) {
+            this.email = dto.getEmail();
+        }
+    }
 }

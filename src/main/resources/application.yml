@@ -6,7 +6,7 @@ spring:
   datasource:
     url: "jdbc:postgresql://localhost:5432/db_vale_ponto"
     username: "postgres"
-    password: "adriel300"
+    password: "senha_banco_de_dados"
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true

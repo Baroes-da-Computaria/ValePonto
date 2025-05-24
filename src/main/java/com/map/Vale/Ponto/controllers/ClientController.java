@@ -1,17 +1,27 @@
 package com.map.Vale.Ponto.controllers;
 
+import com.map.Vale.Ponto.model.client.Client;
+import com.map.Vale.Ponto.model.client.ClientRequestDTO;
+import com.map.Vale.Ponto.services.ClientService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/valeponto/client")
 public class ClientController {
-    // todo: colocar o swagger
-    @GetMapping
-    public ResponseEntity<String> teste() {
-        // todo implementar o endpoint
-        return ResponseEntity.ok("Hello from Vale Ponto");
+
+    private final ClientService clientService;
+
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
+    }
+
+    @PostMapping
+    public ResponseEntity<Client> createClient(@RequestBody ClientRequestDTO dto) {
+
+        // chama o service para salvar o curso
+        var client = clientService.create(dto);
+
+        return ResponseEntity.ok(client);
     }
 }

@@ -1,16 +1,17 @@
 package com.map.Vale.Ponto.model.product;
 
-import com.map.Vale.Ponto.enums.ProductCategories;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Data
 @Getter
 @Setter
-public class ProductDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductRequestDTO {
     private String name;
-    private ProductCategories category;
+    private String category;
     private String description;
     private String subtitle;
     private Double price;

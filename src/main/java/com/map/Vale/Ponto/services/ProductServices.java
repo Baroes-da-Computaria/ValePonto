@@ -1,10 +1,13 @@
 package com.map.Vale.Ponto.services;
 
+import com.map.Vale.Ponto.controllers.error.DataBaseException;
 import com.map.Vale.Ponto.controllers.error.ResourceNotFoundException;
-import com.map.Vale.Ponto.model.product.ProductDTO;
 import com.map.Vale.Ponto.model.product.Product;
+import com.map.Vale.Ponto.model.product.ProductRequestDTO;
+import com.map.Vale.Ponto.model.product.ProductResponseDTO;
 import com.map.Vale.Ponto.repositories.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,53 +15,49 @@ import java.util.List;
 @Service
 public class ProductServices {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    public List<Product> findAll(){
-        return productRepository.findAll();
+    public ProductServices(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
-    public Product findById(Long id) {
-        return productRepository.findById(id)
+    public List<ProductResponseDTO> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable).stream().map(ProductResponseDTO::new).toList();
+    }
+
+    public ProductResponseDTO findById(Long id) {
+        var product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado com id: " + id));
+
+        return new ProductResponseDTO(product);
     }
 
-    public Product save(ProductDTO dto) {
-        Product product = fromDTO(dto);
-        return productRepository.save(product);
+    public ProductResponseDTO save(ProductRequestDTO dto) {
+        var product = new Product(dto);
+        var saved = productRepository.save(product);
+        return new ProductResponseDTO(saved);
     }
 
-    public Product update(Long id, ProductDTO dto){
-        Product entity = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this id"));
+    public ProductResponseDTO update(Long id, ProductRequestDTO dto) {
+        var product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado com id: " + id));
 
-        entity.setName(dto.getName());
-        entity.setCategory(dto.getCategory().name());
-        entity.setDescription(dto.getDescription());
-        entity.setSubtitle(dto.getSubtitle());
-        entity.setPrice(dto.getPrice());
-        entity.setImageURL(dto.getImageURL());
-
-        // Atualiza a pontuação com base no novo preço
-        entity.setPoints((int)(dto.getPrice() / 10));
-
-        return productRepository.save(entity);
+        product.updateFromRequest(dto);
+        var updated = productRepository.save(product);
+        return new ProductResponseDTO(updated);
     }
 
     public void delete(Long id) {
-        productRepository.deleteById(id);
-    }
 
-    private Product fromDTO(ProductDTO dto) {
-        Product product = new Product();
-        product.setName(dto.getName());
-        product.setCategory(dto.getCategory().name());
-        product.setDescription(dto.getDescription());
-        product.setSubtitle(dto.getSubtitle());
-        product.setPrice(dto.getPrice());
-        product.setImageURL(dto.getImageURL());
-        product.setPoints((int)(dto.getPrice() / 10));
-        return product;
+        // verifica se esse product existe
+        if (!productRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Produto não encontrado com id: " + id);
+        }
+        try {
+            productRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Falha de integridade referencial");
+        }
+
     }
 }

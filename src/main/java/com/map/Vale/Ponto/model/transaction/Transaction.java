@@ -13,6 +13,7 @@ import lombok.Setter;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long idTransaction;
     private String description;
     private Double value;

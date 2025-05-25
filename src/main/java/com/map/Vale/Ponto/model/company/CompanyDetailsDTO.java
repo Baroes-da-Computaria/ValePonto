@@ -8,17 +8,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyRequestDTO {
+public class CompanyDetailsDTO {
     private String name;
     private String cnpj;
     private Address address;
     private String email;
 
-
-    public CompanyRequestDTO(Company dto){
-        this.name = dto.getName();
-        this.cnpj = dto.getCnpj();
-        this.address = dto.getAddress();
-        this.email = dto.getEmail();
+    public CompanyDetailsDTO(Company entity){
+        this.name = entity.getName();
+        this.cnpj = entity.getCnpj();
+        this.address = entity.getAddress();
+        this.email = entity.getEmail();
     }
 }

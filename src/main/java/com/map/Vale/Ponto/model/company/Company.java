@@ -1,5 +1,6 @@
 package com.map.Vale.Ponto.model.company;
 
+import com.map.Vale.Ponto.model.address.Address;
 import com.map.Vale.Ponto.model.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,20 +29,12 @@ public class Company {
     @Column(name = "cnpj")
     private String cnpj;
 
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "number")
-    private String number;
-
-    @Column(name = "complement")
-    private String city;
-
-    @Column(name = "city")
-    private String state;
-
     @Column(name = "email")
     private String email;
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     private List<Product> products = new ArrayList<>();
@@ -50,13 +43,11 @@ public class Company {
         this.name = dto.getName();
         this.cnpj = dto.getCnpj();
         this.address = dto.getAddress();
-        this.number = dto.getNumber();
-        this.city = dto.getCity();
-        this.state = dto.getState();
         this.email = dto.getEmail();
     }
 
     public void updateFromRequest(CompanyRequestDTO dto) {
+
         if (dto.getName() != null) {
             this.name = dto.getName();
         }
@@ -66,17 +57,12 @@ public class Company {
         if (dto.getAddress() != null) {
             this.address = dto.getAddress();
         }
-        if (dto.getNumber() != null) {
-            this.number = dto.getNumber();
-        }
-        if (dto.getCity() != null) {
-            this.city = dto.getCity();
-        }
-        if (dto.getState() != null) {
-            this.state = dto.getState();
+        if(dto.getAddress() != null) {
+            dto.getAddress().update(dto.getAddress());
         }
         if (dto.getEmail() != null) {
             this.email = dto.getEmail();
         }
+
     }
 }

@@ -6,6 +6,7 @@ import com.map.Vale.Ponto.model.company.Company;
 import com.map.Vale.Ponto.model.company.CompanyRequestDTO;
 import com.map.Vale.Ponto.model.company.CompanyResponseDTO;
 import com.map.Vale.Ponto.repositories.CompanyRepository;
+import com.map.Vale.Ponto.validator.ValidatorCriacaoCompany;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,9 +16,11 @@ import org.springframework.stereotype.Service;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final ValidatorCriacaoCompany validatorCriacaoCompany;
 
-    public CompanyService(CompanyRepository companyRepository) {
+    public CompanyService(CompanyRepository companyRepository, ValidatorCriacaoCompany validadorCriacaoCompany) {
         this.companyRepository = companyRepository;
+        this.validatorCriacaoCompany = validadorCriacaoCompany;
     }
 
     public CompanyResponseDTO findById(Long id) {
@@ -32,7 +35,16 @@ public class CompanyService {
     }
 
     public CompanyResponseDTO save(CompanyRequestDTO dto) {
+        // transforma de dto para entidade
         var company = new Company(dto);
+
+        // validacao da criação da company
+        validatorCriacaoCompany.validar(company, dto.getAddress());
+
+        // Associa o address a comapany(consistencia na persistencia)
+        company.getAddress().setCompany(company);
+
+
         var saved = companyRepository.save(company);
         return new CompanyResponseDTO(saved);
     }

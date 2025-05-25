@@ -1,12 +1,17 @@
 package com.map.Vale.Ponto.model.company;
 
+import com.map.Vale.Ponto.model.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
+@Table
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,6 +42,9 @@ public class Company {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    private List<Product> products = new ArrayList<>();
 
     public Company(CompanyRequestDTO dto) {
         this.name = dto.getName();

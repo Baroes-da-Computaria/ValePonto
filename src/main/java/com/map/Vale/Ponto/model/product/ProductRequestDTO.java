@@ -13,8 +13,8 @@ public class ProductRequestDTO {
     private String name;
     private String category;
     private String description;
-    private String subtitle;
     private Double price;
     private String imageURL;
-
+    private String subtitle;
+    private Long companyId;
 }

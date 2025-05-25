@@ -1,5 +1,6 @@
 package com.map.Vale.Ponto.model.product;
 
+import com.map.Vale.Ponto.model.company.Company;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,9 +41,10 @@ public class Product {
     @Column(name = "points", nullable = false)
     private Integer points;
 
-    public Integer calculatePoints() {
-        return (int) (this.price * 0.1);
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
+
 
     public Product(ProductRequestDTO dto) {
         this.name = dto.getName();
@@ -52,6 +54,9 @@ public class Product {
         this.imageURL = dto.getImageURL();
         this.subtitle = dto.getSubtitle();
         this.points = calculatePoints();
+    }
+    public Integer calculatePoints() {
+        return (int) (this.price * 0.1);
     }
 
     public void updateFromRequest(ProductRequestDTO dto) {

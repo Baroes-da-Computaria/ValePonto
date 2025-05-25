@@ -1,5 +1,6 @@
 package com.map.Vale.Ponto.controllers;
 
+import com.map.Vale.Ponto.model.product.ProductDetailsDTO;
 import com.map.Vale.Ponto.model.product.ProductRequestDTO;
 import com.map.Vale.Ponto.model.product.ProductResponseDTO;
 import com.map.Vale.Ponto.services.ProductService;
@@ -20,7 +21,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProductResponseDTO> geById(@PathVariable("id") Long id) {
+    public ResponseEntity<ProductResponseDTO> getById(@PathVariable("id") Long id) {
 
         var response = productService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -45,7 +46,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> create(@RequestBody ProductRequestDTO dto) {
+    public ResponseEntity<ProductDetailsDTO> create(@RequestBody ProductRequestDTO dto) {
 
         var response = productService.save(dto);
 

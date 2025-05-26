@@ -1,4 +1,4 @@
-package com.map.Vale.Ponto.validator;
+package com.map.Vale.Ponto.validador;
 
 import com.map.Vale.Ponto.controllers.error.ResourceNotFoundException;
 import com.map.Vale.Ponto.model.address.Address;
@@ -7,11 +7,11 @@ import com.map.Vale.Ponto.repositories.CompanyRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidatorCriacaoCompany {
+public class ValidadorCriacaoCompany {
 
     private final CompanyRepository companyRepository;
 
-    public ValidatorCriacaoCompany(CompanyRepository companyRepository){
+    public ValidadorCriacaoCompany(CompanyRepository companyRepository){
         this.companyRepository = companyRepository;
     }
 

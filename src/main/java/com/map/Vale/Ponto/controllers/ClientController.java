@@ -1,7 +1,9 @@
 package com.map.Vale.Ponto.controllers;
 
+import com.map.Vale.Ponto.model.address.Address;
 import com.map.Vale.Ponto.model.client.ClientRequestDTO;
 import com.map.Vale.Ponto.model.client.ClientResponseDTO;
+import com.map.Vale.Ponto.model.client.ClientWithAddressDTO;
 import com.map.Vale.Ponto.services.ClientService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,9 +23,17 @@ public class ClientController {
 
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ClientResponseDTO> geById(@PathVariable("id") Long id) {
+    public ResponseEntity<ClientResponseDTO> getById(@PathVariable("id") Long id) {
 
         var response = clientService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+    }
+
+    @GetMapping(value = "/{id}/details")
+    public ResponseEntity<ClientWithAddressDTO> getDetails(@PathVariable Long id) {
+
+        var response  = clientService.getDetails(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
@@ -57,7 +67,7 @@ public class ClientController {
     @PutMapping(
             value = "/{id}"
     )
-    public ResponseEntity<ClientResponseDTO> update(@PathVariable("id") Long id, @RequestBody ClientRequestDTO dto) {
+    public ResponseEntity<ClientResponseDTO> update(@PathVariable Long id, @RequestBody ClientRequestDTO dto) {
 
         var response = clientService.update(id, dto);
         // retorna o curso response
@@ -73,5 +83,16 @@ public class ClientController {
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
+    }
+
+    @PutMapping(value = "/{id}/address")
+    public ResponseEntity<Void> atualizarEndereco(@PathVariable Long id, @RequestBody Address address) {
+        clientService.atualizarEndereco(id, address);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+    @PostMapping(value = "/{id}/address")
+    public ResponseEntity<Void> adicionarEndereco(@PathVariable Long id, @RequestBody Address address) {
+        clientService.adicionarEndereco(id, address);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

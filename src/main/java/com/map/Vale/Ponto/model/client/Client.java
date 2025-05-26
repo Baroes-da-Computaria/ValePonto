@@ -1,10 +1,12 @@
 package com.map.Vale.Ponto.model.client;
 
 
+import com.map.Vale.Ponto.model.address.Address;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table
 @Getter
 @Setter
 @AllArgsConstructor
@@ -32,6 +34,10 @@ public class Client {
 
     @Column(name = "telefone", nullable = false)
     private String telefone;
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     public Client(ClientRequestDTO dto) {
         this.firstName = dto.getFirstName();

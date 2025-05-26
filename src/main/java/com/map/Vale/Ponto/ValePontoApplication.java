@@ -8,6 +8,7 @@ public class ValePontoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ValePontoApplication.class, args);
+
 	}
 
 }

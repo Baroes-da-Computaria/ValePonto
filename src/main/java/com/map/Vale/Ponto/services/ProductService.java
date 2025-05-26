@@ -9,13 +9,11 @@ import com.map.Vale.Ponto.model.product.ProductRequestDTO;
 import com.map.Vale.Ponto.model.product.ProductResponseDTO;
 import com.map.Vale.Ponto.repositories.CompanyRepository;
 import com.map.Vale.Ponto.repositories.ProductRepository;
-import com.map.Vale.Ponto.validator.ValidadorCriacaoProduct;
+import com.map.Vale.Ponto.validador.ValidadorCriacaoProduct;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProductService {

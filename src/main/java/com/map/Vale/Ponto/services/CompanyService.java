@@ -6,7 +6,7 @@ import com.map.Vale.Ponto.model.company.Company;
 import com.map.Vale.Ponto.model.company.CompanyRequestDTO;
 import com.map.Vale.Ponto.model.company.CompanyResponseDTO;
 import com.map.Vale.Ponto.repositories.CompanyRepository;
-import com.map.Vale.Ponto.validator.ValidatorCriacaoCompany;
+import com.map.Vale.Ponto.validador.ValidadorCriacaoCompany;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
-    private final ValidatorCriacaoCompany validatorCriacaoCompany;
+    private final ValidadorCriacaoCompany validatorCriacaoCompany;
 
-    public CompanyService(CompanyRepository companyRepository, ValidatorCriacaoCompany validadorCriacaoCompany) {
+    public CompanyService(CompanyRepository companyRepository, ValidadorCriacaoCompany validadorCriacaoCompany) {
         this.companyRepository = companyRepository;
         this.validatorCriacaoCompany = validadorCriacaoCompany;
     }
@@ -71,5 +71,4 @@ public class CompanyService {
         }
 
     }
-
 }

@@ -1,4 +1,4 @@
-package com.map.Vale.Ponto.validator;
+package com.map.Vale.Ponto.validador;
 
 import com.map.Vale.Ponto.controllers.error.EntityExistsException;
 import com.map.Vale.Ponto.controllers.error.ResourceNotFoundException;

@@ -1,5 +1,6 @@
 package com.map.Vale.Ponto.model.address;
 
+import com.map.Vale.Ponto.model.client.Client;
 import com.map.Vale.Ponto.model.company.Company;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,8 @@ public class Address {
     @OneToOne(mappedBy = "address")
     private Company company;
 
+    @OneToOne(mappedBy = "address")
+    private Client client;
 
     public void update(Address entity) {
 

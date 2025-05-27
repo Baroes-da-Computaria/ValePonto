@@ -10,10 +10,12 @@ import com.map.Vale.Ponto.model.product.ProductResponseDTO;
 import com.map.Vale.Ponto.repositories.CompanyRepository;
 import com.map.Vale.Ponto.repositories.ProductRepository;
 import com.map.Vale.Ponto.validador.ValidadorCriacaoProduct;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductService {
@@ -30,10 +32,12 @@ public class ProductService {
         this.companyRepository = companyRepository;
     }
 
+    @Transactional
     public Page<ProductResponseDTO> findAll(Pageable pageable) {
         return productRepository.findAll(pageable).map(ProductResponseDTO::new);
     }
 
+    @Transactional
     public ProductResponseDTO findById(Long id) {
         var product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado com id: " + id));
@@ -41,6 +45,7 @@ public class ProductService {
         return new ProductResponseDTO(product);
     }
 
+    @Transactional
     public ProductDetailsDTO save(ProductRequestDTO dto) {
 
         var product = new Product(dto);
@@ -61,15 +66,19 @@ public class ProductService {
 
     }
 
-    public ProductResponseDTO update(Long id, ProductRequestDTO dto) {
+    @Transactional
+    public ProductResponseDTO update(Long id,Long id_company, ProductRequestDTO dto) {
         var product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado com id: " + id));
+
+        // todo: validadorUpdateProduct
 
         product.updateFromRequest(dto);
         var updated = productRepository.save(product);
         return new ProductResponseDTO(updated);
     }
 
+    @Transactional
     public void delete(Long id) {
 
         // verifica se esse product existe

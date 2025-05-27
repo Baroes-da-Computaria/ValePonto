@@ -1,6 +1,7 @@
 package com.map.Vale.Ponto.model.company;
 
 import com.map.Vale.Ponto.model.address.Address;
+import com.map.Vale.Ponto.model.address.AddressForClient;
 import com.map.Vale.Ponto.model.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -58,7 +59,7 @@ public class Company {
             this.address = dto.getAddress();
         }
         if(dto.getAddress() != null) {
-            dto.getAddress().update(dto.getAddress());
+            this.address.update(new AddressForClient(dto.getAddress()));
         }
         if (dto.getEmail() != null) {
             this.email = dto.getEmail();

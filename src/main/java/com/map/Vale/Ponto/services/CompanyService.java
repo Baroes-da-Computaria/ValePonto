@@ -7,6 +7,7 @@ import com.map.Vale.Ponto.model.company.CompanyRequestDTO;
 import com.map.Vale.Ponto.model.company.CompanyResponseDTO;
 import com.map.Vale.Ponto.repositories.CompanyRepository;
 import com.map.Vale.Ponto.validador.ValidadorCriacaoCompany;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ public class CompanyService {
         this.validatorCriacaoCompany = validadorCriacaoCompany;
     }
 
+    @Transactional(readOnly = true)
     public CompanyResponseDTO findById(Long id) {
         var company = companyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Company não encontrado com id: " + id));
@@ -30,10 +32,12 @@ public class CompanyService {
         return new CompanyResponseDTO(company);
     }
 
+    @Transactional(readOnly = true)
     public Page<CompanyResponseDTO> findAll(PageRequest pageable) {
         return companyRepository.findAll(pageable).map(CompanyResponseDTO::new);
     }
 
+    @Transactional
     public CompanyResponseDTO save(CompanyRequestDTO dto) {
         // transforma de dto para entidade
         var company = new Company(dto);
@@ -49,6 +53,7 @@ public class CompanyService {
         return new CompanyResponseDTO(saved);
     }
 
+    @Transactional
     public CompanyResponseDTO update(Long id, CompanyRequestDTO dto) {
         var company = companyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Company não encontrado com id: " + id));
@@ -58,6 +63,7 @@ public class CompanyService {
         return new CompanyResponseDTO(updated);
     }
 
+    @Transactional
     public void delete(Long id) {
 
         // verifica se esse client existe

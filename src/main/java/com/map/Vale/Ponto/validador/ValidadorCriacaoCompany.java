@@ -19,6 +19,7 @@ public class ValidadorCriacaoCompany {
     public void validar(Company company, Address address) {
         validarExistenciaCompany(company.getName());
         validarExistenciaCep(address.getCep());
+        // todo : validarExistenciaCnpj(company.getCnpj());
     }
 
     private void validarExistenciaCep(String cep) {

@@ -42,22 +42,22 @@ public class Address {
     @OneToOne(mappedBy = "address")
     private Client client;
 
-    public void update(Address entity) {
+    public void update(AddressForClient entity) {
 
         if (entity.getCep() != null) {
-            this.cep = entity.cep;
+            this.cep = entity.getCep();
         }
         if (entity.getState() != null) {
-            this.state = entity.state;
+            this.state = entity.getState();
         }
         if (entity.getCity() != null) {
-            this.city = entity.city;
+            this.city = entity.getCity();
         }
         if (entity.getRoad() != null) {
-            this.road = entity.road;
+            this.road = entity.getRoad();
         }
         if (entity.getNumber() != null) {
-            this.number = entity.number;
+            this.number = entity.getNumber();
         }
 
     }

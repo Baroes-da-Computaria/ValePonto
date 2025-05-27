@@ -3,6 +3,7 @@ package com.map.Vale.Ponto.services;
 import com.map.Vale.Ponto.controllers.error.DataBaseException;
 import com.map.Vale.Ponto.controllers.error.ResourceNotFoundException;
 import com.map.Vale.Ponto.model.address.Address;
+import com.map.Vale.Ponto.model.address.AddressForClient;
 import com.map.Vale.Ponto.model.client.Client;
 import com.map.Vale.Ponto.model.client.ClientRequestDTO;
 import com.map.Vale.Ponto.model.client.ClientResponseDTO;
@@ -11,7 +12,7 @@ import com.map.Vale.Ponto.repositories.AddressRepository;
 import com.map.Vale.Ponto.repositories.ClientRepository;
 import com.map.Vale.Ponto.validador.ValidadorAdicionarEnderecoDeClient;
 import com.map.Vale.Ponto.validador.ValidadorAtualizarEnderecoDeClient;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +40,7 @@ public class ClientService {
         this.addressRepository = addressRepository;
     }
 
+    @Transactional(readOnly = true)
     public ClientResponseDTO findById(Long id) {
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Client não encontrado com id: " + id));
@@ -46,16 +48,19 @@ public class ClientService {
         return new ClientResponseDTO(client);
     }
 
+    @Transactional(readOnly = true)
     public Page<ClientResponseDTO> findAll(PageRequest pageable) {
         return clientRepository.findAll(pageable).map(ClientResponseDTO::new);
     }
 
+    @Transactional
     public ClientResponseDTO save(ClientRequestDTO dto) {
         var client = new Client(dto);
         var saved = clientRepository.save(client);
         return new ClientResponseDTO(saved);
     }
 
+    @Transactional
     public ClientResponseDTO update(Long id, ClientRequestDTO dto) {
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Client não encontrado com id: " + id));
@@ -65,6 +70,7 @@ public class ClientService {
         return new ClientResponseDTO(updated);
     }
 
+    @Transactional
     public void delete(Long id) {
 
         // verifica se esse client existe
@@ -80,22 +86,14 @@ public class ClientService {
     }
 
     @Transactional
-    public void atualizarEndereco(Long id, Address address) {
-        validadorAtualizarEndereco.validar(id, address);
+    public void atualizarEndereco(Long id, AddressForClient dto) {
+        validadorAtualizarEndereco.validar(id, dto);
         var client = clientRepository.getReferenceById(id);
-        address.update(address);
+        var address = client.getAddress();
+        address.update(dto);
         clientRepository.save(client);
     }
 
-//    @Transactional
-//    public void adicionarEndereco(Long id, Address address) {
-//        validadorAdicionarEndereco.validar(id, address);
-//        var client = clientRepository.getReferenceById(id);
-//        var addressSaved = addressRepository.save(address);
-//        client.setAddress(addressSaved);
-//        addressSaved.setClient(client);
-//        clientRepository.save(client);
-//    }
     @Transactional
     public void adicionarEndereco(Long id, Address address) {
         validadorAdicionarEndereco.validar(id, address);
@@ -109,6 +107,7 @@ public class ClientService {
     }
 
 
+    @Transactional(readOnly = true)
     public ClientWithAddressDTO getDetails(Long id) {
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Client não encontrado com id: "));

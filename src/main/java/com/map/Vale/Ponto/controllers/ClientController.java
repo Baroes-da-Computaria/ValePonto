@@ -1,10 +1,15 @@
 package com.map.Vale.Ponto.controllers;
 
 import com.map.Vale.Ponto.model.address.Address;
+import com.map.Vale.Ponto.model.address.AddressForClient;
 import com.map.Vale.Ponto.model.client.ClientRequestDTO;
 import com.map.Vale.Ponto.model.client.ClientResponseDTO;
 import com.map.Vale.Ponto.model.client.ClientWithAddressDTO;
 import com.map.Vale.Ponto.services.ClientService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -13,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/valeponto/client")
+@Tag(name = "Clientes", description = "Operações relacionadas a clientes")
 public class ClientController {
 
     private final ClientService clientService;
@@ -21,7 +27,11 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-
+    @Operation(summary = "Buscar Client por id", description = "Retorna o Client com base no ID fornecido.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Client não encontrado com id: {id}"),
+            @ApiResponse(responseCode = "200", description = "Detalhes do Client encontrados"),
+    })
     @GetMapping(value = "/{id}")
     public ResponseEntity<ClientResponseDTO> getById(@PathVariable("id") Long id) {
 
@@ -31,6 +41,11 @@ public class ClientController {
     }
 
     @GetMapping(value = "/{id}/details")
+    @Operation(summary = "Buscar detalhes de um client", description = "Retorna os detalhes de um client com base no ID fornecido.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Client não encontrado com id: {id}"),
+            @ApiResponse(responseCode = "200", description = "Detalhes do client encontrados"),
+    })
     public ResponseEntity<ClientWithAddressDTO> getDetails(@PathVariable Long id) {
 
         var response  = clientService.getDetails(id);
@@ -39,6 +54,10 @@ public class ClientController {
     }
 
     @GetMapping
+    @Operation(summary = "Listar todos os clients", description = "Retorna uma lista paginada de todos os clients.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de clients retornada com sucesso")
+    })
     public ResponseEntity<Page<ClientResponseDTO>> getAll(
             @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize
@@ -55,6 +74,12 @@ public class ClientController {
 
     }
 
+
+    @Operation(summary = "Criar um novo client", description = "Cria um novo client com base nos dados fornecidos.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "409",description = "Client com esse nome já existe")
+
+    })
     @PostMapping
     public ResponseEntity<ClientResponseDTO> create(@RequestBody ClientRequestDTO dto) {
 
@@ -64,9 +89,11 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PutMapping(
-            value = "/{id}"
-    )
+    @PutMapping(value = "/{id}")
+    @Operation(summary = "Atualizar as informações de um client existente", description = "Atualiza as informações de um client existente com base no ID fornecido.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Client não encontrado com id: {id}")
+    })
     public ResponseEntity<ClientResponseDTO> update(@PathVariable Long id, @RequestBody ClientRequestDTO dto) {
 
         var response = clientService.update(id, dto);
@@ -75,6 +102,12 @@ public class ClientController {
 
     }
 
+    @Operation(summary = "Excluir um client existente", description = "Exclui um client com base no ID fornecido.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Client não encontrado com id: {id}"),
+            @ApiResponse(responseCode = "400", description = "Falha de integridade referencial"),
+            @ApiResponse(responseCode = "204", description = "Client excluído com sucesso")
+    })
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
 
@@ -86,11 +119,24 @@ public class ClientController {
     }
 
     @PutMapping(value = "/{id}/address")
-    public ResponseEntity<Void> atualizarEndereco(@PathVariable Long id, @RequestBody Address address) {
+    @Operation(summary = "Atualizar endereço do client", description = "Atualiza o endereço de um client existente com base no ID fornecido.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Client não encontrado com id: {id}"),
+            @ApiResponse(responseCode = "404",description = "Cep do endereço associado não encontrado"),
+            @ApiResponse(responseCode = "200", description = "Endereco do client atualizado com sucesso")
+    })
+    public ResponseEntity<Void> atualizarEndereco(@PathVariable Long id, @RequestBody AddressForClient address) {
         clientService.atualizarEndereco(id, address);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
     @PostMapping(value = "/{id}/address")
+    @Operation(summary = "Adicionar endereço no client", description = "Atualiza o endereço de um client existente com base no ID fornecido.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Client não encontrado"),
+            @ApiResponse(responseCode = "404",description = "Cep do endereço associado não encontrado"),
+            @ApiResponse(responseCode = "200", description = "Endereco do client adionado com sucesso")
+    })
     public ResponseEntity<Void> adicionarEndereco(@PathVariable Long id, @RequestBody Address address) {
         clientService.adicionarEndereco(id, address);
         return ResponseEntity.status(HttpStatus.OK).build();

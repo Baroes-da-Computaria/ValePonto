@@ -10,17 +10,24 @@ public class ValidadorAdicionarEnderecoDeClient {
 
     private final ClientRepository clientRepository;
 
-    public ValidadorAdicionarEnderecoDeClient(ClientRepository clientRepository){
+    public ValidadorAdicionarEnderecoDeClient(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
 
     public void validar(Long id, Address address) {
         validarExistenciaCLient(id);
+        validarExistenciaCep(address.getCep());
+    }
+
+    private void validarExistenciaCep(String cep) {
+//        if(!exists(cep)){
+//            throw new ResourceNotFoundException("Cep "+ id + " não encontrado");
+//        }
     }
 
     private void validarExistenciaCLient(Long id) {
-        if(!clientRepository.existsById(id)){
-            throw new ResourceNotFoundException("Client com id"+ id + "não encontrado");
+        if (!clientRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Client com id " + id + " não encontrado");
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.map.Vale.Ponto.validador;
 
 import com.map.Vale.Ponto.controllers.error.ResourceNotFoundException;
-import com.map.Vale.Ponto.model.address.Address;
+import com.map.Vale.Ponto.model.address.AddressForClient;
 import com.map.Vale.Ponto.repositories.ClientRepository;
 import org.springframework.stereotype.Component;
 
@@ -14,8 +14,15 @@ public class ValidadorAtualizarEnderecoDeClient {
         this.clientRepository = clientRepository;
     }
     
-    public void validar(Long id, Address address) {
+    public void validar(Long id, AddressForClient address) {
         validarExistenciaCLient(id);
+        validarExistenciaCep(address.getCep());
+    }
+
+    private void validarExistenciaCep(String cep) {
+//        if(!exists(cep)){
+//            throw new ResourceNotFoundException("Cep "+ id + " não encontrado");
+//        }
     }
 
     private void validarExistenciaCLient(Long id) {

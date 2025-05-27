@@ -60,6 +60,7 @@ public class Product {
     }
 
     public void updateFromRequest(ProductRequestDTO dto) {
+
         if (dto.getName() != null) {
             this.setName(dto.getName());
         }
@@ -71,6 +72,7 @@ public class Product {
         }
         if (dto.getPrice() != null) {
             this.setPrice(dto.getPrice());
+            this.setPoints(calculatePoints());
         }
         if (dto.getImageURL() != null) {
             this.setImageURL(dto.getImageURL());
@@ -78,5 +80,6 @@ public class Product {
         if (dto.getSubtitle() != null) {
             this.setSubtitle(dto.getSubtitle());
         }
+
     }
 }

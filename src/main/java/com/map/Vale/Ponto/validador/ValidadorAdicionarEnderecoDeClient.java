@@ -15,8 +15,10 @@ public class ValidadorAdicionarEnderecoDeClient {
     }
 
     public void validar(Long id, Address address) {
+
         validarExistenciaCLient(id);
         validarExistenciaCep(address.getCep());
+
     }
 
     private void validarExistenciaCep(String cep) {
@@ -26,8 +28,10 @@ public class ValidadorAdicionarEnderecoDeClient {
     }
 
     private void validarExistenciaCLient(Long id) {
+
         if (!clientRepository.existsById(id)) {
             throw new ResourceNotFoundException("Client com id " + id + " não encontrado");
         }
+
     }
 }

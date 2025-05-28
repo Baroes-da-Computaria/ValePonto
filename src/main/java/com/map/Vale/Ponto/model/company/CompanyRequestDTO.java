@@ -14,7 +14,6 @@ public class CompanyRequestDTO {
     private Address address;
     private String email;
 
-
     public CompanyRequestDTO(Company dto){
         this.name = dto.getName();
         this.cnpj = dto.getCnpj();

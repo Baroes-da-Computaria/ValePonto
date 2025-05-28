@@ -1,17 +1,27 @@
 package com.map.Vale.Ponto.model.client;
 
 
+import com.map.Vale.Ponto.model.order.Order;
 import com.map.Vale.Ponto.model.address.Address;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table
+@Table(name = "tb_clients")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Client {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -38,6 +48,17 @@ public class Client {
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    private List<Order> orders = new ArrayList<>();
+
+    @Column(updatable = false, name = "created_date")
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+    @Column(name = "last_modified_date")
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
 
     public Client(ClientRequestDTO dto) {
         this.firstName = dto.getFirstName();

@@ -26,19 +26,24 @@ public class CompanyService {
 
     @Transactional(readOnly = true)
     public CompanyResponseDTO findById(Long id) {
+
         var company = companyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Company não encontrado com id: " + id));
 
         return new CompanyResponseDTO(company);
+
     }
 
     @Transactional(readOnly = true)
     public Page<CompanyResponseDTO> findAll(PageRequest pageable) {
+
         return companyRepository.findAll(pageable).map(CompanyResponseDTO::new);
+
     }
 
     @Transactional
     public CompanyResponseDTO save(CompanyRequestDTO dto) {
+
         // transforma de dto para entidade
         var company = new Company(dto);
 
@@ -51,16 +56,19 @@ public class CompanyService {
 
         var saved = companyRepository.save(company);
         return new CompanyResponseDTO(saved);
+
     }
 
     @Transactional
     public CompanyResponseDTO update(Long id, CompanyRequestDTO dto) {
+
         var company = companyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Company não encontrado com id: " + id));
 
         company.updateFromRequest(dto);
         var updated = companyRepository.save(company);
         return new CompanyResponseDTO(updated);
+
     }
 
     @Transactional

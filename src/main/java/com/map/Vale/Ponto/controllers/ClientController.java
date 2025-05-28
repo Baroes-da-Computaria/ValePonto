@@ -48,7 +48,7 @@ public class ClientController {
     })
     public ResponseEntity<ClientWithAddressDTO> getDetails(@PathVariable Long id) {
 
-        var response  = clientService.getDetails(id);
+        var response = clientService.getDetails(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
@@ -74,10 +74,9 @@ public class ClientController {
 
     }
 
-
     @Operation(summary = "Criar um novo client", description = "Cria um novo client com base nos dados fornecidos.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "409",description = "Client com esse nome já existe")
+            @ApiResponse(responseCode = "409", description = "Client com esse nome já existe")
 
     })
     @PostMapping
@@ -102,13 +101,13 @@ public class ClientController {
 
     }
 
+    @DeleteMapping(value = "/{id}")
     @Operation(summary = "Excluir um client existente", description = "Exclui um client com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Client não encontrado com id: {id}"),
             @ApiResponse(responseCode = "400", description = "Falha de integridade referencial"),
             @ApiResponse(responseCode = "204", description = "Client excluído com sucesso")
     })
-    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
 
         // chama o service para deletar o client
@@ -122,23 +121,27 @@ public class ClientController {
     @Operation(summary = "Atualizar endereço do client", description = "Atualiza o endereço de um client existente com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Client não encontrado com id: {id}"),
-            @ApiResponse(responseCode = "404",description = "Cep do endereço associado não encontrado"),
+            @ApiResponse(responseCode = "404", description = "Cep do endereço associado não encontrado"),
             @ApiResponse(responseCode = "200", description = "Endereco do client atualizado com sucesso")
     })
     public ResponseEntity<Void> atualizarEndereco(@PathVariable Long id, @RequestBody AddressForClient address) {
+
         clientService.atualizarEndereco(id, address);
         return ResponseEntity.status(HttpStatus.OK).build();
+
     }
 
     @PostMapping(value = "/{id}/address")
     @Operation(summary = "Adicionar endereço no client", description = "Atualiza o endereço de um client existente com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Client não encontrado"),
-            @ApiResponse(responseCode = "404",description = "Cep do endereço associado não encontrado"),
+            @ApiResponse(responseCode = "404", description = "Cep do endereço associado não encontrado"),
             @ApiResponse(responseCode = "200", description = "Endereco do client adionado com sucesso")
     })
     public ResponseEntity<Void> adicionarEndereco(@PathVariable Long id, @RequestBody Address address) {
+
         clientService.adicionarEndereco(id, address);
         return ResponseEntity.status(HttpStatus.OK).build();
+
     }
 }

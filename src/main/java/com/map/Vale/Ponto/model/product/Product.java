@@ -1,19 +1,26 @@
 package com.map.Vale.Ponto.model.product;
 
 import com.map.Vale.Ponto.model.company.Company;
+import com.map.Vale.Ponto.model.order.OrderItem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table
+@Table(name = "tb_products")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -45,6 +52,8 @@ public class Product {
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<OrderItem> items = new ArrayList<>();
 
     public Product(ProductRequestDTO dto) {
         this.name = dto.getName();
@@ -55,6 +64,7 @@ public class Product {
         this.subtitle = dto.getSubtitle();
         this.points = calculatePoints();
     }
+
     public Integer calculatePoints() {
         return (int) (this.price * 0.1);
     }

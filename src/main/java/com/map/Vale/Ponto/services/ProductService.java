@@ -24,25 +24,30 @@ public class ProductService {
     private final ValidadorCriacaoProduct validadorCriacaoProduct;
     private final CompanyRepository companyRepository;
 
-    public ProductService(ProductRepository productRepository, ValidadorCriacaoProduct validadorCriacaoProduct,
-                          CompanyRepository companyRepository) {
+    public ProductService(ProductRepository productRepository,
+                          ValidadorCriacaoProduct validadorCriacaoProduct,
+                          CompanyRepository companyRepository
+    ) {
         this.productRepository = productRepository;
         this.validadorCriacaoProduct = validadorCriacaoProduct;
-
         this.companyRepository = companyRepository;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<ProductResponseDTO> findAll(Pageable pageable) {
+
         return productRepository.findAll(pageable).map(ProductResponseDTO::new);
+
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public ProductResponseDTO findById(Long id) {
+
         var product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado com id: " + id));
 
         return new ProductResponseDTO(product);
+
     }
 
     @Transactional
@@ -68,6 +73,7 @@ public class ProductService {
 
     @Transactional
     public ProductResponseDTO update(Long id,Long id_company, ProductRequestDTO dto) {
+
         var product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado com id: " + id));
 
@@ -76,12 +82,12 @@ public class ProductService {
         product.updateFromRequest(dto);
         var updated = productRepository.save(product);
         return new ProductResponseDTO(updated);
+
     }
 
     @Transactional
     public void delete(Long id) {
 
-        // verifica se esse product existe
         if (!productRepository.existsById(id)) {
             throw new ResourceNotFoundException("Produto não encontrado com id: " + id);
         }

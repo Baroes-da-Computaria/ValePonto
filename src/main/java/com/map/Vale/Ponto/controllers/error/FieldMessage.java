@@ -1,6 +1,7 @@
 package com.map.Vale.Ponto.controllers.error;
 
 import lombok.*;
+
 @Setter
 @Getter
 @AllArgsConstructor

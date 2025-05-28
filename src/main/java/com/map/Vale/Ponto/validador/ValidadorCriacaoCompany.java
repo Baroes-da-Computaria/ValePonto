@@ -17,9 +17,11 @@ public class ValidadorCriacaoCompany {
 
 
     public void validar(Company company, Address address) {
+
         validarExistenciaCompany(company.getName());
         validarExistenciaCep(address.getCep());
         // todo : validarExistenciaCnpj(company.getCnpj());
+
     }
 
     private void validarExistenciaCep(String cep) {
@@ -28,10 +30,12 @@ public class ValidadorCriacaoCompany {
     }
 
     private void validarExistenciaCompany(String name) {
+
         // Não pode ter duas empresas com mesmo nome
         if(companyRepository.existsByName(name)){
             throw new ResourceNotFoundException(
                     "Company com nome " + name + " já existe.");
         }
+
     }
 }

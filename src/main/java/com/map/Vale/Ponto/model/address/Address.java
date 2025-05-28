@@ -7,13 +7,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Table
+@Table(name = "tb_address")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Address {
 
     @Id
@@ -41,6 +47,14 @@ public class Address {
 
     @OneToOne(mappedBy = "address")
     private Client client;
+
+    @Column(updatable = false, name = "created_date")
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+    @Column(name = "last_modified_date")
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
 
     public void update(AddressForClient entity) {
 

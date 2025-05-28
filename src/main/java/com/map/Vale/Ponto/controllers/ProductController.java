@@ -25,7 +25,6 @@ public class ProductController {
         this.productService = productServices;
     }
 
-
     @Operation(summary = "Buscar Product por id", description = "Retorna o Product com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Product não encontrado com id: {id}"),
@@ -40,11 +39,11 @@ public class ProductController {
     }
 
 
+    @GetMapping
     @Operation(summary = "Listar todos os Products", description = "Retorna uma lista paginada de todos os Products.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de Products retornada com sucesso")
     })
-    @GetMapping
     public ResponseEntity<Page<ProductResponseDTO>> getAll(
             @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize
@@ -61,12 +60,13 @@ public class ProductController {
 
     }
 
+
+    @PostMapping
     @Operation(summary = "Criar um novo Product", description = "Cria um novo Product com base nos dados fornecidos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "409",description = "Product com esse nome já existe")
 
     })
-    @PostMapping
     public ResponseEntity<ProductDetailsDTO> create(@RequestBody ProductRequestDTO dto) {
 
         var response = productService.save(dto);
@@ -75,16 +75,17 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @PutMapping(
+            value = "/{id}/{id_company}"
+    )
     @Operation(summary = "Atualizar informações de um Product existente", description = "Atualiza as informações de um Product existente com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Product não encontrado com id: {id}"),
     })
-    @PutMapping(
-            value = "/{id}/{id_company}"
-    )
     public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id,@PathVariable Long id_company, @RequestBody ProductRequestDTO dto) {
 
         var response = productService.update(id, id_company, dto);
+
         // retorna o curso response
         return ResponseEntity.status(HttpStatus.OK).body(response);
 

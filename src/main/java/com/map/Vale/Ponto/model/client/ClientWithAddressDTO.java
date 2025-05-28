@@ -1,6 +1,5 @@
 package com.map.Vale.Ponto.model.client;
 
-import com.map.Vale.Ponto.model.address.Address;
 import com.map.Vale.Ponto.model.address.AddressForClient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientWithAddressDTO {
-
     private String firstName;
     private String lastName;
     private String email;

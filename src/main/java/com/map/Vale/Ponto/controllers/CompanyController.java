@@ -60,7 +60,7 @@ public class CompanyController {
 
     @Operation(summary = "Criar uma nova Company", description = "Cria um nova Company com base nos dados fornecidos.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "409",description = "Company com esse nome já existe")
+            @ApiResponse(responseCode = "409", description = "Company com esse nome já existe")
 
     })
     @PostMapping
@@ -70,15 +70,14 @@ public class CompanyController {
 
         // retorna o product response
         return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 
     @Operation(summary = "Atualizar informações de uma Company existente", description = "Atualiza as informações de um Company existente com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Company não encontrada com id: {id}"),
     })
-    @PutMapping(
-            value = "/{id}"
-    )
+    @PutMapping(value = "/{id}")
     public ResponseEntity<CompanyResponseDTO> update(@PathVariable("id") Long id, @RequestBody CompanyRequestDTO dto) {
 
         var response = companyService.update(id, dto);

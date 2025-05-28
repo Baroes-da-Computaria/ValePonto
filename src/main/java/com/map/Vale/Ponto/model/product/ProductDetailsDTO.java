@@ -11,7 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDetailsDTO {
-
     private String name;
     private String category;
     private Double price;

@@ -67,7 +67,7 @@ public class OrderController {
     })
     public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO dto) {
 
-        var order = orderService.create(dto.getClientId(), dto.getProducts());
+        var order = orderService.createBuilder(dto.getClientId(),dto.getClientForOrder(), dto.getProducts());
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
 
     }

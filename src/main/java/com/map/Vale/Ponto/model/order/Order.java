@@ -1,5 +1,6 @@
 package com.map.Vale.Ponto.model.order;
 
+import com.map.Vale.Ponto.model.address.Address;
 import com.map.Vale.Ponto.model.client.Client;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,10 @@ public class Order {
 
     @Column(name = "total")
     private BigDecimal total;
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipping_address_id")
+    private Address shippingAddress;
 
     @Column(updatable = false, name = "created_date")
     @CreatedDate

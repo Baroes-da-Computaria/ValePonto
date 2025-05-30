@@ -1,5 +1,6 @@
 package com.map.Vale.Ponto.model.order;
 
+import com.map.Vale.Ponto.model.address.AddressForOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,4 +14,5 @@ import java.util.Map;
 public class OrderRequestDTO {
     private Long clientId;
     private Map<String, Integer> products = new HashMap<>(); // productId -> quantity
+    private AddressForOrder clientForOrder;
 }

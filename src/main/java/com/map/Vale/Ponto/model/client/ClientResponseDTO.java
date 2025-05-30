@@ -1,6 +1,5 @@
 package com.map.Vale.Ponto.model.client;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

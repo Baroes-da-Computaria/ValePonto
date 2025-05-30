@@ -2,6 +2,7 @@ package com.map.Vale.Ponto.model.address;
 
 import com.map.Vale.Ponto.model.client.Client;
 import com.map.Vale.Ponto.model.company.Company;
+import com.map.Vale.Ponto.model.order.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,6 +49,9 @@ public class Address {
     @OneToOne(mappedBy = "address")
     private Client client;
 
+    @OneToOne(mappedBy = "shippingAddress")
+    private Order order;
+
     @Column(updatable = false, name = "created_date")
     @CreatedDate
     private LocalDateTime createdDate;
@@ -55,6 +59,21 @@ public class Address {
     @Column(name = "last_modified_date")
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
+
+    public Address(AddressForClient address) {
+        this.cep = address.getCep();
+        this.state = address.getState();
+        this.city = address.getCity();
+        this.road = address.getRoad();
+        this.number = address.getNumber();
+    }
+    public Address(AddressForOrder address) {
+        this.cep = address.getCep();
+        this.state = address.getState();
+        this.city = address.getCity();
+        this.road = address.getRoad();
+        this.number = address.getNumber();
+    }
 
     public void update(AddressForClient entity) {
 

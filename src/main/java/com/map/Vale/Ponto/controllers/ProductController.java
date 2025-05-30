@@ -38,7 +38,6 @@ public class ProductController {
 
     }
 
-
     @GetMapping
     @Operation(summary = "Listar todos os Products", description = "Retorna uma lista paginada de todos os Products.")
     @ApiResponses(value = {
@@ -59,7 +58,6 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(page);
 
     }
-
 
     @PostMapping
     @Operation(summary = "Criar um novo Product", description = "Cria um novo Product com base nos dados fornecidos.")

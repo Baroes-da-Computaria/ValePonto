@@ -15,7 +15,6 @@ public class ValidadorCriacaoCompany {
         this.companyRepository = companyRepository;
     }
 
-
     public void validar(Company company, Address address) {
 
         validarExistenciaCompany(company.getName());

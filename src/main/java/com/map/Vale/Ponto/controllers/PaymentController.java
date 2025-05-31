@@ -1,6 +1,7 @@
 package com.map.Vale.Ponto.controllers;
 
 import com.map.Vale.Ponto.model.payments.PaymentDetailsDTO;
+import com.map.Vale.Ponto.model.product.ProductRequestDTO;
 import com.map.Vale.Ponto.model.product.ProductResponseDTO;
 import com.map.Vale.Ponto.services.PaymentService;
 import com.map.Vale.Ponto.services.ProcessPaymentService;
@@ -10,10 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/valeponto/payment")
@@ -22,7 +20,7 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    public PaymentController(PaymentService paymentService){
+    public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
     }
 
@@ -38,4 +36,19 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.OK).body((PaymentDetailsDTO) response);
 
     }
+
+    @PutMapping(value = "/{id}/confirm")
+    @Operation(summary = "Atualizar o status de um Payment existente", description = "Atualiza as informações de um Payment existente com base no ID fornecido.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Product não encontrado com id: {id}"),
+    })
+    public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id) {
+
+        paymentService.confirmPayment(id);
+
+        // retorna o curso response
+        return ResponseEntity.status(HttpStatus.OK).build();
+
+    }
+
 }

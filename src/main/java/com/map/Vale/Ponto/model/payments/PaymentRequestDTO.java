@@ -18,5 +18,4 @@ public class PaymentRequestDTO {
     AddressForOrder addressForOrder;
     private PaymentMethods paymentMethods;
     private CreditCardInfoDTO cardInfo;
-
 }

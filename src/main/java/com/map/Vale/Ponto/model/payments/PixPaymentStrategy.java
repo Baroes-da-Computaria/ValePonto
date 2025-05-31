@@ -1,7 +1,9 @@
 package com.map.Vale.Ponto.model.payments;
 
+import com.map.Vale.Ponto.controllers.error.ResourceNotFoundException;
 import com.map.Vale.Ponto.enums.PaymentMethods;
 import com.map.Vale.Ponto.enums.PaymentStatus;
+import com.map.Vale.Ponto.model.command.ConfirmPayment;
 import com.map.Vale.Ponto.model.order.Order;
 import com.map.Vale.Ponto.repositories.OrderRepository;
 import com.map.Vale.Ponto.repositories.PaymentRepository;
@@ -17,15 +19,18 @@ public class PixPaymentStrategy implements PaymentStrategy {
     private final PaymentRepository paymentRepository;
     private final OrderRepository orderRepository;
     private final OrderService orderService;
+    private final ConfirmPayment confirmPayment;
 
     public PixPaymentStrategy(
             PaymentRepository paymentRepository,
             OrderRepository orderRepository,
-            OrderService orderService
+            OrderService orderService,
+            ConfirmPayment confirmPayment
     ) {
         this.paymentRepository = paymentRepository;
         this.orderRepository = orderRepository;
         this.orderService = orderService;
+        this.confirmPayment = confirmPayment;
     }
 
     @Override
@@ -52,6 +57,10 @@ public class PixPaymentStrategy implements PaymentStrategy {
         paymentRepository.save(payment);
 
         System.out.println("Pagamento via PIX criado. QR Code: " + pixCode);
+    }
+
+    public void confirmPayment(Long orderId){
+        confirmPayment.execute(orderId);
     }
 
     private String gerarPixCode(Long orderId, BigDecimal amount) {

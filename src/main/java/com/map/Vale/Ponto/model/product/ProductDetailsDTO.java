@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDetailsDTO {
+
     private String name;
     private String category;
     private Double price;
@@ -18,10 +19,12 @@ public class ProductDetailsDTO {
     private CompanyResponseDTO company;
 
     public ProductDetailsDTO(Product entity) {
+
         this.name = entity.getName();
         this.category = entity.getCategory();
         this.price = entity.getPrice();
         this.imageURL = entity.getImageURL();
         this.company = new CompanyResponseDTO(entity.getCompany());
+
     }
 }

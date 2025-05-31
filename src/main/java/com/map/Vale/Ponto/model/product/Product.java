@@ -56,6 +56,7 @@ public class Product {
     private List<OrderItem> items = new ArrayList<>();
 
     public Product(ProductRequestDTO dto) {
+
         this.name = dto.getName();
         this.category = dto.getCategory();
         this.description = dto.getDescription();
@@ -63,6 +64,7 @@ public class Product {
         this.imageURL = dto.getImageURL();
         this.subtitle = dto.getSubtitle();
         this.points = calculatePoints();
+
     }
 
     public Integer calculatePoints() {

@@ -55,10 +55,12 @@ public class Company {
     private LocalDateTime lastModifiedDate;
 
     public Company(CompanyRequestDTO dto) {
+
         this.name = dto.getName();
         this.cnpj = dto.getCnpj();
         this.address = dto.getAddress();
         this.email = dto.getEmail();
+
     }
 
     public void updateFromRequest(CompanyRequestDTO dto) {
@@ -80,4 +82,5 @@ public class Company {
         }
 
     }
+
 }

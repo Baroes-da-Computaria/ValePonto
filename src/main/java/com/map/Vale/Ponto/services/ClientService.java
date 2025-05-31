@@ -25,7 +25,6 @@ public class ClientService {
     private final ValidadorAdicionarEnderecoDeClient validadorAdicionarEndereco;
     private final ValidadorAtualizarEnderecoDeClient validadorAtualizarEndereco;
 
-
     public ClientService(
             ClientRepository clientRepository,
             ValidadorAdicionarEnderecoDeClient validadorAdicionarEndereco,
@@ -124,4 +123,5 @@ public class ClientService {
         return new ClientWithAddressDTO(client);
 
     }
+
 }

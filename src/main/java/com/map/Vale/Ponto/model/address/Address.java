@@ -67,6 +67,7 @@ public class Address {
         this.road = address.getRoad();
         this.number = address.getNumber();
     }
+
     public Address(AddressForOrder address) {
         this.cep = address.getCep();
         this.state = address.getState();

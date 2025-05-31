@@ -2,6 +2,7 @@ package com.map.Vale.Ponto.model.order;
 
 import com.map.Vale.Ponto.model.address.Address;
 import com.map.Vale.Ponto.model.client.Client;
+import com.map.Vale.Ponto.model.payments.Payment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,6 +45,9 @@ public class Order {
     @JoinColumn(name = "shipping_address_id")
     private Address shippingAddress;
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
+
     @Column(updatable = false, name = "created_date")
     @CreatedDate
     private LocalDateTime createdDate;
@@ -53,9 +57,11 @@ public class Order {
     private LocalDateTime lastModifiedDate;
 
     public void calculateTotal() {
+
         this.total = items.stream()
                 .map(OrderItem::getSubtotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+
     }
 }
 

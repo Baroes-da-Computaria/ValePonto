@@ -70,39 +70,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponseDTO create(Long clientId, AddressForClient address, Map<String, Integer> productIdToQuantity) {
-
-        validadorCriacaoOrder.validar(clientId, productIdToQuantity);
-        //validadorCriacaoAddress.validar(address);
-
-        Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Client not found"));
-
-        Order order = new Order();
-        order.setClient(client);
-        var addressSaved = addressRepository.save(new Address(address));
-        //order.setShippingAddress(addressSaved.getId());
-
-        for (Map.Entry<String, Integer> entry : productIdToQuantity.entrySet()) {
-            var key = Long.parseLong(entry.getKey());
-
-            Product product = productRepository.findById(key)
-                    .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-            OrderItem item = new OrderItem();
-            item.setOrder(order);
-            item.setProduct(product);
-            item.setQuantity(entry.getValue());
-
-            order.getItems().add(item);
-        }
-
-        order.calculateTotal();
-        Order saved = orderRepository.save(order);
-        return new OrderResponseDTO(saved);
-    }
-
-    @Transactional
-    public OrderResponseDTO createBuilder(Long clientId, AddressForOrder address, Map<String, Integer> productIdToQuantity) {
+    public Order createBuilder(Long clientId, AddressForOrder address, Map<String, Integer> productIdToQuantity) {
 
         // validate the orderBuilder creation
         validadorCriacaoOrder.validar(clientId, productIdToQuantity);
@@ -126,8 +94,8 @@ public class OrderService {
         });
 
         // build the order from the orderBuilder
-        Order saved = orderRepository.save(orderBuilder.build());
-        return new OrderResponseDTO(saved);
+        Order order = orderBuilder.build();
+        return orderRepository.save(order);
     }
 
     @Transactional

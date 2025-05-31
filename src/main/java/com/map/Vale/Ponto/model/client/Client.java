@@ -1,6 +1,5 @@
 package com.map.Vale.Ponto.model.client;
 
-
 import com.map.Vale.Ponto.model.order.Order;
 import com.map.Vale.Ponto.model.address.Address;
 import jakarta.persistence.*;
@@ -70,6 +69,7 @@ public class Client {
     }
 
     public void updateFromRequest(ClientRequestDTO dto) {
+
         if (dto.getFirstName() != null) {
             this.firstName = dto.getFirstName();
         }
@@ -88,5 +88,7 @@ public class Client {
         if (dto.getTelefone() != null) {
             this.telefone = dto.getTelefone();
         }
+
     }
+
 }

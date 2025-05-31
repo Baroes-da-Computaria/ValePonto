@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientWithAddressDTO {
+
     private String firstName;
     private String lastName;
     private String email;
@@ -20,14 +21,20 @@ public class ClientWithAddressDTO {
     private AddressForClient address;
 
     public ClientWithAddressDTO(Client entity) {
+
         this.firstName = entity.getFirstName();
         this.lastName = entity.getLastName();
         this.email = entity.getEmail();
         this.cpf = entity.getCpf();
         this.password = entity.getPassword();
         this.telefone = entity.getTelefone();
+
         if (entity.getAddress() != null) {
+
             this.address = new AddressForClient(entity.getAddress());
+
         }
+
     }
+
 }

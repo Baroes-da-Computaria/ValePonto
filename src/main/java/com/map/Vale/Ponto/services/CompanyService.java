@@ -74,7 +74,6 @@ public class CompanyService {
     @Transactional
     public void delete(Long id) {
 
-        // verifica se esse client existe
         if (!companyRepository.existsById(id)) {
             throw new ResourceNotFoundException("Company não encontrado com id: " + id);
         }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ValidadorCriacaoAddress {
+
     private final AddressRepository addressRepository;
 
     public ValidadorCriacaoAddress(AddressRepository addressRepository){
@@ -15,7 +16,9 @@ public class ValidadorCriacaoAddress {
     public void validar(AddressForOrder address){
         validarExistenciaCep(address.getCep());
     }
+
     private void validarExistenciaCep(String cep){
         // todo: validar cep
     }
+
 }

@@ -5,6 +5,7 @@ import com.map.Vale.Ponto.enums.PaymentStatus;
 import com.map.Vale.Ponto.model.order.Order;
 import com.map.Vale.Ponto.repositories.PaymentRepository;
 import com.map.Vale.Ponto.services.OrderService;
+import com.map.Vale.Ponto.services.PointService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -14,10 +15,16 @@ public class CreditCardPaymentStrategy implements PaymentStrategy {
 
     private final PaymentRepository paymentRepository;
     private final OrderService orderService;
+    private final PointService pointService;
 
-    public CreditCardPaymentStrategy(PaymentRepository paymentRepository, OrderService orderService) {
+    public CreditCardPaymentStrategy(
+            PaymentRepository paymentRepository,
+            OrderService orderService,
+            PointService pointService
+    ) {
         this.paymentRepository = paymentRepository;
         this.orderService = orderService;
+        this.pointService = pointService;
     }
 
     @Override
@@ -45,10 +52,11 @@ public class CreditCardPaymentStrategy implements PaymentStrategy {
         payment.setOrder(order);
         payment.setMethod(PaymentMethods.CREDIT_CARD);
         payment.setAmount(order.getTotal());
-        payment.setStatus(PaymentStatus.CONFIRMED);
-        payment.setPaidAt(LocalDateTime.now());
-
+        payment.confirmPayment();
         paymentRepository.save(payment);
+
+        // Adiciona pontos ao cliente
+        pointService.addPoints(order.getClient().getId(), order.getId());
 
     }
 

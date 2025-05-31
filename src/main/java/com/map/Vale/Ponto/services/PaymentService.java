@@ -33,6 +33,7 @@ public class PaymentService {
     }
 
     public PaymentDetailsDTO findById(Long id) {
+
         var payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment não encontrado com id: " + id));
         return new PaymentDetailsDTO(payment);

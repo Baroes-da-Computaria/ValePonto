@@ -1,0 +1,57 @@
+package com.map.Vale.Ponto.services;
+
+import com.map.Vale.Ponto.controllers.error.ResourceNotFoundException;
+import com.map.Vale.Ponto.model.client.Client;
+import com.map.Vale.Ponto.model.order.Order;
+import com.map.Vale.Ponto.model.points.Points;
+import com.map.Vale.Ponto.repositories.ClientRepository;
+import com.map.Vale.Ponto.repositories.OrderRepository;
+import com.map.Vale.Ponto.repositories.PointsRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.Objects;
+
+@Service
+public class PointService {
+
+    private final PointsRepository pointsRepository;
+    private final ClientRepository clientRepository;
+    private final OrderRepository orderRepository;
+
+    public PointService(
+            PointsRepository pointsRepository,
+            ClientRepository clientRepository,
+            OrderRepository orderRepository
+    ) {
+        this.pointsRepository = pointsRepository;
+        this.clientRepository = clientRepository;
+        this.orderRepository = orderRepository;
+    }
+
+    // Add methods to handle business logic related to points
+    public void addPoints(Long clientId,Long order_id) {
+
+        var client = clientRepository.findById(clientId).orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
+        var order = orderRepository.findById(order_id).orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + order_id));
+        validar(client, order);
+        var totalPontos = calculateTotalPoints(order);
+        var points = new Points(order, totalPontos);
+        pointsRepository.save(points);
+
+    }
+
+    private Long calculateTotalPoints(Order order) {
+        Long totalPoints = 0L;
+        for (var item : order.getItems()) {
+            totalPoints += item.getProduct().getPoints();
+        }
+        return totalPoints;
+    }
+
+    private void validar(Client client, Order order) {
+        if(!Objects.equals(order.getClient().getId(), client.getId())) {
+            throw new ResourceNotFoundException("Client with id: " + client.getId() + " does not match the order's client id: " + order.getClient().getId());
+        }
+        // validar se esse payment já foi pago
+    }
+}

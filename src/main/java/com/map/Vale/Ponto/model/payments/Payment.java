@@ -59,10 +59,8 @@ public class Payment {
     private String pixCode;
 
     public void confirmPayment() {
-
         this.status = PaymentStatus.CONFIRMED;
         this.paidAt = LocalDateTime.now();
-
     }
 
     public void failPayment() {

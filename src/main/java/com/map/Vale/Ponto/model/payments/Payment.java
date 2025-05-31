@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tb_orders")
+@Table(name = "tb_payments")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -53,6 +53,9 @@ public class Payment {
     @Column(name = "last_modified_date")
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
+
+    // Campo específico do pagamento PIX
+    private String pixCode;
 
     public void confirmPayment() {
 

@@ -59,18 +59,18 @@ public class OrderController {
 
     }
 
-    @PostMapping
-    @Operation(summary = "Criar um novo Orders", description = "Cria um novo Orders com base nos dados fornecidos.")
-    @ApiResponses(value = {
-            //@ApiResponse(responseCode = "409",description = "Product com esse nome já existe")
-
-    })
-    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO dto) {
-
-        var order = orderService.createBuilder(dto.getClientId(),dto.getClientForOrder(), dto.getProducts());
-        return ResponseEntity.status(HttpStatus.CREATED).body(order);
-
-    }
+//    @PostMapping
+//    @Operation(summary = "Criar um novo Orders", description = "Cria um novo Orders com base nos dados fornecidos.")
+//    @ApiResponses(value = {
+//            //@ApiResponse(responseCode = "409",description = "Product com esse nome já existe")
+//
+//    })
+//    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO dto) {
+//
+//        var order = orderService.createBuilder(dto.getClientId(),dto.getClientForOrder(), dto.getProducts());
+//        return ResponseEntity.status(HttpStatus.CREATED).body(order);
+//
+//    }
 
 
     @Operation(summary = "Excluir um Order existente", description = "Exclui um Order com base no ID fornecido.")

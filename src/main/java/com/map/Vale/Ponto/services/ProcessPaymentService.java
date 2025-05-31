@@ -17,7 +17,7 @@ public class ProcessPaymentService {
             ClientService clientService,
             PaymentService paymentService
             //NotificationService notificationService
-            
+
     ){
         this.orderService = orderService;
         this.clientService = clientService;
@@ -27,12 +27,9 @@ public class ProcessPaymentService {
 
     public void processOrder(PaymentRequestDTO dto) {
 
-        // processar o order
-        var order = orderService.createBuilder(dto.getClient_id(), dto.getAddressForOrder(), dto.getProductIdToQuantity());
-
         // processa o pagamento
-        paymentService.process(order, dto.getPaymentMethods());
-        
+        paymentService.process(dto);
+
         //notificationService.sendEmailConfirmation(order);
 
     }

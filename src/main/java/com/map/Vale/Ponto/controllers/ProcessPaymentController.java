@@ -1,7 +1,6 @@
 package com.map.Vale.Ponto.controllers;
 
 import com.map.Vale.Ponto.model.payments.PaymentRequestDTO;
-import com.map.Vale.Ponto.model.product.ProductResponseDTO;
 import com.map.Vale.Ponto.services.ProcessPaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,13 +21,13 @@ public class ProcessPaymentController {
         this.processPaymentService = processPaymentService;
     }
 
-    @PostMapping
-    @Operation(summary = "Iniciar processc Payment", description = "Cria um novo Payment com base nos dados fornecidos.")
+    @PostMapping(value = "/pix")
+    @Operation(summary = "Iniciar processo do Payment", description = "Cria um novo Payment com base nos dados fornecidos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "409", description = "Product com esse nome já existe")
 
     })
-    public ResponseEntity<Void> create(@RequestBody PaymentRequestDTO dto) {
+    public ResponseEntity<Void> payment(@RequestBody PaymentRequestDTO dto) {
 
         processPaymentService.processOrder(dto);
         return ResponseEntity.status(HttpStatus.OK).build();

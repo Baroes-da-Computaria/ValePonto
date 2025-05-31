@@ -5,6 +5,7 @@ import com.map.Vale.Ponto.enums.PaymentStatus;
 import com.map.Vale.Ponto.model.order.Order;
 import com.map.Vale.Ponto.repositories.OrderRepository;
 import com.map.Vale.Ponto.repositories.PaymentRepository;
+import com.map.Vale.Ponto.services.OrderService;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -15,13 +16,26 @@ public class PixPaymentStrategy implements PaymentStrategy {
 
     private final PaymentRepository paymentRepository;
     private final OrderRepository orderRepository;
+    private final OrderService orderService;
 
-    public PixPaymentStrategy(PaymentRepository paymentRepository, OrderRepository orderRepository) {
+    public PixPaymentStrategy(
+            PaymentRepository paymentRepository,
+            OrderRepository orderRepository,
+            OrderService orderService
+    ) {
         this.paymentRepository = paymentRepository;
         this.orderRepository = orderRepository;
+        this.orderService = orderService;
     }
+
     @Override
-    public void processPayment(Order order) {
+    public void processPayment(PaymentRequestDTO dto){
+        // processar o order
+        var order = orderService.createBuilder(dto.getClient_id(), dto.getAddressForOrder(), dto.getProductIdToQuantity());
+        process(order);
+    }
+
+    private void process(Order order) {
 
         // Simula criação do QR Code PIX
         String pixCode = gerarPixCode(order.getId(), order.getTotal());

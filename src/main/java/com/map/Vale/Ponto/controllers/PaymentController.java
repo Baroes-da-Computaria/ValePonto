@@ -35,7 +35,7 @@ public class PaymentController {
     public ResponseEntity<PaymentDetailsDTO> getById(@PathVariable Long id) {
 
         var response = paymentService.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body((PaymentDetailsDTO) response);
 
     }
 }

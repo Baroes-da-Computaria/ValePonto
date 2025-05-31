@@ -46,6 +46,7 @@ public class Payment {
 
     @Column(name = "paid_at")
     private LocalDateTime paidAt;
+
     @Column(updatable = false, name = "created_date")
     @CreatedDate
     private LocalDateTime createdDate;

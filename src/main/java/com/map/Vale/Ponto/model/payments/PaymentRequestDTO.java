@@ -14,7 +14,9 @@ import java.util.Map;
 @AllArgsConstructor
 public class PaymentRequestDTO {
     private Long client_id;
-    Map<String, Integer> productIdToQuantity = new HashMap<>(); // productID e Quant
+    Map<String, Integer> productIdToQuantity = new HashMap<>(); // productID e Quantidade
     AddressForOrder addressForOrder;
     private PaymentMethods paymentMethods;
+    private CreditCardInfoDTO cardInfo;
+
 }

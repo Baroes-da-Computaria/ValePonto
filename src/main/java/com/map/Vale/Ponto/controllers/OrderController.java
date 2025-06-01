@@ -1,6 +1,5 @@
 package com.map.Vale.Ponto.controllers;
 
-import com.map.Vale.Ponto.model.order.OrderRequestDTO;
 import com.map.Vale.Ponto.model.order.OrderResponseDTO;
 import com.map.Vale.Ponto.services.OrderService;
 import io.swagger.v3.oas.annotations.Operation;

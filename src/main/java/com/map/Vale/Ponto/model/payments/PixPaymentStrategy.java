@@ -1,6 +1,5 @@
 package com.map.Vale.Ponto.model.payments;
 
-import com.map.Vale.Ponto.controllers.error.ResourceNotFoundException;
 import com.map.Vale.Ponto.enums.PaymentMethods;
 import com.map.Vale.Ponto.enums.PaymentStatus;
 import com.map.Vale.Ponto.model.command.ConfirmPayment;
@@ -20,38 +19,37 @@ public class PixPaymentStrategy implements PaymentStrategy {
     private final OrderRepository orderRepository;
     private final OrderService orderService;
     private final ConfirmPayment confirmPayment;
+    private final CalcularValorCompra calcularValorCompra;
 
     public PixPaymentStrategy(
             PaymentRepository paymentRepository,
             OrderRepository orderRepository,
             OrderService orderService,
-            ConfirmPayment confirmPayment
+            ConfirmPayment confirmPayment,
+            CalcularValorCompra calcularValorCompra
     ) {
         this.paymentRepository = paymentRepository;
         this.orderRepository = orderRepository;
         this.orderService = orderService;
         this.confirmPayment = confirmPayment;
+        this.calcularValorCompra = calcularValorCompra;
     }
 
     @Override
     public void processPayment(PaymentRequestDTO dto){
         var order = orderService.createBuilder(dto.getClient_id(), dto.getAddress(), dto.getProductIdToQuantity());
-        process(order);
+        process(order,dto.getPoints());
     }
 
-    private void process(Order order) {
-
-        // Simula criação do QR Code PIX
+    private void process(Order order,Long pontosParaTrocar) {
         String pixCode = gerarPixCode(order.getId(), order.getTotal());
-
-        // Cria e associa pagamento
         Payment payment = new Payment();
         payment.setOrder(orderRepository.findById(order.getId()).get());
         payment.setMethod(PaymentMethods.PIX);
         payment.setStatus(PaymentStatus.PENDING);
-        payment.setAmount(order.getTotal());
-        payment.setPixCode(pixCode); // campo extra específico do PIX
-
+        var clientId = order.getClient().getId();
+        var amount = calcularValorCompra.execute(clientId, order.getTotal(), pontosParaTrocar);
+        payment.setAmount(amount);
         paymentRepository.save(payment);
     }
 

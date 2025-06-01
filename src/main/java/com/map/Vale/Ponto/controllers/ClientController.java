@@ -1,6 +1,5 @@
 package com.map.Vale.Ponto.controllers;
 
-import com.map.Vale.Ponto.model.address.Address;
 import com.map.Vale.Ponto.model.address.AddressDTO;
 import com.map.Vale.Ponto.model.client.ClientRequestDTO;
 import com.map.Vale.Ponto.model.client.ClientResponseDTO;

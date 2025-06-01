@@ -3,6 +3,7 @@ package com.map.Vale.Ponto.services;
 import com.map.Vale.Ponto.controllers.error.ResourceNotFoundException;
 import com.map.Vale.Ponto.model.client.Client;
 import com.map.Vale.Ponto.model.order.Order;
+import com.map.Vale.Ponto.model.order.OrderItem;
 import com.map.Vale.Ponto.model.points.Points;
 import com.map.Vale.Ponto.repositories.ClientRepository;
 import com.map.Vale.Ponto.repositories.OrderRepository;
@@ -33,14 +34,14 @@ public class PointService {
         var order = orderRepository.findById(order_id).orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + order_id));
         validar(client, order);
         var totalPontos = calculateTotalPoints(order);
-        var points = new Points(order, totalPontos);
+        var points = new Points(client, totalPontos);
         pointsRepository.save(points);
     }
 
     private Long calculateTotalPoints(Order order) {
-        Long totalPoints = 0L;
-        for (var item : order.getItems()) {
-            totalPoints += item.getProduct().getPoints();
+        long totalPoints = 0L;
+        for (OrderItem item : order.getItems()) {
+            totalPoints += item.getProduct().getPoints() * item.getQuantity();
         }
         return totalPoints;
     }
@@ -49,6 +50,5 @@ public class PointService {
         if(!Objects.equals(order.getClient().getId(), client.getId())) {
             throw new ResourceNotFoundException("Client with id: " + client.getId() + " does not match the order's client id: " + order.getClient().getId());
         }
-        // todo validar se esse payment já foi pago
     }
 }

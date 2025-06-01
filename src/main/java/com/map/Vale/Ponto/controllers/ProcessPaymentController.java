@@ -20,7 +20,6 @@ public class ProcessPaymentController {
     public ProcessPaymentController(ProcessPaymentService processPaymentService){
         this.processPaymentService = processPaymentService;
     }
-
     @PostMapping
     @Operation(summary = "Iniciar processo do Payment", description = "Cria um novo Payment com base nos dados fornecidos.")
     @ApiResponses(value = {
@@ -31,5 +30,4 @@ public class ProcessPaymentController {
         processPaymentService.processOrder(dto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }

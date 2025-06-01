@@ -1,5 +1,6 @@
 package com.map.Vale.Ponto.model.points;
 
+import com.map.Vale.Ponto.model.client.Client;
 import com.map.Vale.Ponto.model.order.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class Points {
 
     @OneToOne
     @JoinColumn(name = "client_id")
-    private Order order;
+    private Client client;
 
     @Column(name = "total_points")
     private Long totalPoints;
@@ -39,8 +40,8 @@ public class Points {
     @Column(name = "expirationd_date")
     private LocalDateTime expirationDate;
 
-    public Points(Order order, Long totalPontos) {
-        this.order = order;
+    public Points(Client client, Long totalPontos) {
+        this.client = client;
         this.totalPoints = totalPontos;
     }
 

@@ -8,6 +8,7 @@ import com.map.Vale.Ponto.model.payments.PaymentStrategy;
 import com.map.Vale.Ponto.model.payments.PaymentStrategyFactory;
 import com.map.Vale.Ponto.repositories.PaymentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PaymentService {
@@ -31,6 +32,8 @@ public class PaymentService {
         strategy.processPayment(dto);
     }
 
+
+    @Transactional
     public PaymentDetailsDTO findById(Long id) {
         var payment = paymentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Payment não encontrado com id: " + id));
         return new PaymentDetailsDTO(payment);

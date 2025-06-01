@@ -45,7 +45,7 @@ public class Product {
     private String subtitle;
 
     @Column(name = "points", nullable = false)
-    private Integer points;
+    private Long points;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)
@@ -64,8 +64,8 @@ public class Product {
         this.points = calculatePoints();
     }
 
-    public Integer calculatePoints() {
-        return (int) (this.price * 0.1);
+    public Long calculatePoints() {
+        return (long) (this.price * 0.1);
     }
 
     public void updateFromRequest(ProductRequestDTO dto) {

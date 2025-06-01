@@ -17,5 +17,4 @@ public class ClientResponseDTO {
         this.lastName = client.getLastName();
         this.email = client.getEmail();
     }
-
 }

@@ -19,6 +19,9 @@ public class PaymentRequestDTO {
     @NotNull(message = "O campo client_id é obrigatório")
     private Long client_id;
 
+    @NotNull(message = "O campo points é obrigatório")
+    private Long points;
+
     @NotNull(message = "O campo productIdToQuantity é obrigatório")
     private Map<String, Integer> productIdToQuantity = new HashMap<>(); // productID e Quantidade
 

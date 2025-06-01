@@ -22,7 +22,6 @@ public class CompanyRequestDTO {
     @CNPJ(message = "{CNPJ inválido}")
     private String cnpj;
 
-    // todo: substituir por um dto de endereço (evitar dependência circular)
     @NotNull(message = "{O endereço é obrigatório}")
     @Valid
     private AddressDTO address;

@@ -1,14 +1,12 @@
 package com.map.Vale.Ponto.model.payments;
 
 import com.map.Vale.Ponto.enums.PaymentMethods;
-import com.map.Vale.Ponto.enums.PaymentStatus;
 import com.map.Vale.Ponto.model.order.Order;
 import com.map.Vale.Ponto.repositories.PaymentRepository;
 import com.map.Vale.Ponto.services.OrderService;
 import com.map.Vale.Ponto.services.PointService;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 
 @Component("CREDIT_CARD")
 public class CreditCardPaymentStrategy implements PaymentStrategy {
@@ -29,7 +27,7 @@ public class CreditCardPaymentStrategy implements PaymentStrategy {
 
     @Override
     public void processPayment(PaymentRequestDTO dto) {
-        var order = orderService.createBuilder(dto.getClient_id(), dto.getAddressForOrder(), dto.getProductIdToQuantity());
+        var order = orderService.createBuilder(dto.getClient_id(), dto.getAddress(), dto.getProductIdToQuantity());
         process(order, dto.getCardInfo());
     }
 

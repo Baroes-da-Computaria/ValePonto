@@ -35,7 +35,7 @@ public class PixPaymentStrategy implements PaymentStrategy {
 
     @Override
     public void processPayment(PaymentRequestDTO dto){
-        var order = orderService.createBuilder(dto.getClient_id(), dto.getAddressForOrder(), dto.getProductIdToQuantity());
+        var order = orderService.createBuilder(dto.getClient_id(), dto.getAddress(), dto.getProductIdToQuantity());
         process(order);
     }
 

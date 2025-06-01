@@ -114,16 +114,4 @@ public class ClientController {
         clientService.atualizarEndereco(id, address);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
-    @PostMapping(value = "/{id}/address")
-    @Operation(summary = "Adicionar endereço no client", description = "Atualiza o endereço de um client existente com base no ID fornecido.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "404", description = "Client não encontrado"),
-            @ApiResponse(responseCode = "404", description = "Cep do endereço associado não encontrado"),
-            @ApiResponse(responseCode = "200", description = "Endereco do client adionado com sucesso")
-    })
-    public ResponseEntity<Void> adicionarEndereco(@PathVariable Long id, @RequestBody AddressDTO address) {
-        clientService.adicionarEndereco(id, new Address(address));
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
 }

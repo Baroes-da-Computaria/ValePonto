@@ -1,6 +1,8 @@
 package com.map.Vale.Ponto.model.client;
 
+import com.map.Vale.Ponto.model.address.AddressDTO;
 import com.map.Vale.Ponto.validador.telefone.Telefone;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -47,4 +49,7 @@ public class ClientRequestDTO {
 
     @Telefone(message = "Telefone inválido")
     private String telefone;
+
+    @Valid
+    private AddressDTO address;
 }

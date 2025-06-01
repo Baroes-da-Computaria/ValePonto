@@ -66,6 +66,7 @@ public class Client {
         this.cpf = dto.getCpf();
         this.password = dto.getPassword();
         this.telefone = dto.getTelefone();
+        this.address = new Address(dto.getAddress());
     }
 
     public void updateFromRequest(ClientRequestDTO dto) {

@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentDetailsDTO {
-
     private OrderResponseDTO order;
     private PaymentMethods method;
     private PaymentStatus status;

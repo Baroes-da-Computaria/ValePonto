@@ -1,7 +1,7 @@
 package com.map.Vale.Ponto.controllers;
 
 import com.map.Vale.Ponto.model.address.Address;
-import com.map.Vale.Ponto.model.address.AddressForClient;
+import com.map.Vale.Ponto.model.address.AddressDTO;
 import com.map.Vale.Ponto.model.client.ClientRequestDTO;
 import com.map.Vale.Ponto.model.client.ClientResponseDTO;
 import com.map.Vale.Ponto.model.client.ClientWithAddressDTO;
@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/valeponto/client")
-@Tag(name = "Clientes", description = "Operações relacionadas a clientes")
+@Tag(name = "Clients", description = "Operações relacionadas a clientes")
 public class ClientController {
 
     private final ClientService clientService;
@@ -27,17 +28,15 @@ public class ClientController {
         this.clientService = clientService;
     }
 
+    @GetMapping(value = "/{id}")
     @Operation(summary = "Buscar Client por id", description = "Retorna o Client com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Client não encontrado com id: {id}"),
             @ApiResponse(responseCode = "200", description = "Detalhes do Client encontrados"),
     })
-    @GetMapping(value = "/{id}")
     public ResponseEntity<ClientResponseDTO> getById(@PathVariable("id") Long id) {
-
         var response = clientService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
     }
 
     @GetMapping(value = "/{id}/details")
@@ -47,10 +46,8 @@ public class ClientController {
             @ApiResponse(responseCode = "200", description = "Detalhes do client encontrados"),
     })
     public ResponseEntity<ClientWithAddressDTO> getDetails(@PathVariable Long id) {
-
         var response = clientService.getDetails(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
     }
 
     @GetMapping
@@ -74,17 +71,13 @@ public class ClientController {
 
     }
 
+    @PostMapping
     @Operation(summary = "Criar um novo client", description = "Cria um novo client com base nos dados fornecidos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "409", description = "Client com esse nome já existe")
-
     })
-    @PostMapping
-    public ResponseEntity<ClientResponseDTO> create(@RequestBody ClientRequestDTO dto) {
-
+    public ResponseEntity<ClientResponseDTO> create(@Valid @RequestBody ClientRequestDTO dto) {
         var response = clientService.save(dto);
-
-        // retorna o product response
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -93,12 +86,9 @@ public class ClientController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Client não encontrado com id: {id}")
     })
-    public ResponseEntity<ClientResponseDTO> update(@PathVariable Long id, @RequestBody ClientRequestDTO dto) {
-
+    public ResponseEntity<ClientResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ClientRequestDTO dto) {
         var response = clientService.update(id, dto);
-        // retorna o curso response
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
     }
 
     @DeleteMapping(value = "/{id}")
@@ -109,12 +99,8 @@ public class ClientController {
             @ApiResponse(responseCode = "204", description = "Client excluído com sucesso")
     })
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
-
-        // chama o service para deletar o client
         clientService.delete(id);
-
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 
     @PutMapping(value = "/{id}/address")
@@ -124,11 +110,9 @@ public class ClientController {
             @ApiResponse(responseCode = "404", description = "Cep do endereço associado não encontrado"),
             @ApiResponse(responseCode = "200", description = "Endereco do client atualizado com sucesso")
     })
-    public ResponseEntity<Void> atualizarEndereco(@PathVariable Long id, @RequestBody AddressForClient address) {
-
+    public ResponseEntity<Void> atualizarEndereco(@PathVariable Long id, @RequestBody AddressDTO address) {
         clientService.atualizarEndereco(id, address);
         return ResponseEntity.status(HttpStatus.OK).build();
-
     }
 
     @PostMapping(value = "/{id}/address")
@@ -138,10 +122,8 @@ public class ClientController {
             @ApiResponse(responseCode = "404", description = "Cep do endereço associado não encontrado"),
             @ApiResponse(responseCode = "200", description = "Endereco do client adionado com sucesso")
     })
-    public ResponseEntity<Void> adicionarEndereco(@PathVariable Long id, @RequestBody Address address) {
-
-        clientService.adicionarEndereco(id, address);
+    public ResponseEntity<Void> adicionarEndereco(@PathVariable Long id, @RequestBody AddressDTO address) {
+        clientService.adicionarEndereco(id, new Address(address));
         return ResponseEntity.status(HttpStatus.OK).build();
-
     }
 }

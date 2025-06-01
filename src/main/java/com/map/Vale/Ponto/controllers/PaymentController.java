@@ -14,8 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/valeponto/payment")
-@Tag(name = "Payment", description = "Operações relacionadas a payments")
+@RequestMapping("/valeponto/payments")
+@Tag(name = "Payments", description = "Operações relacionadas a payments")
 public class PaymentController {
 
     private final PaymentService paymentService;
@@ -24,17 +24,15 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
+    @GetMapping(value = "/{id}")
     @Operation(summary = "Buscar Payment por id", description = "Retorna o Payment com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Product não encontrado com id: {id}"),
             @ApiResponse(responseCode = "200", description = "Detalhes do Product encontrados"),
     })
-    @GetMapping(value = "/{id}")
     public ResponseEntity<PaymentDetailsDTO> getById(@PathVariable Long id) {
-
         var response = paymentService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body((PaymentDetailsDTO) response);
-
     }
 
     @PutMapping(value = "/{id}/confirm")
@@ -43,12 +41,7 @@ public class PaymentController {
             @ApiResponse(responseCode = "404", description = "Product não encontrado com id: {id}"),
     })
     public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id) {
-
         paymentService.confirmPayment(id);
-
-        // retorna o curso response
         return ResponseEntity.status(HttpStatus.OK).build();
-
     }
-
 }

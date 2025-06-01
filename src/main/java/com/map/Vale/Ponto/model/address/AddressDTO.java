@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressForClient {
+public class AddressDTO {
     private String cep;
     private String state;
     private String city;
     private String road;
     private String number;
 
-    public AddressForClient(Address address) {
+    public AddressDTO(Address address) {
         this.cep = address.getCep();
         this.state = address.getState();
         this.city = address.getCity();

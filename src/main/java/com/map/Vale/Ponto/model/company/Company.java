@@ -1,7 +1,7 @@
 package com.map.Vale.Ponto.model.company;
 
 import com.map.Vale.Ponto.model.address.Address;
-import com.map.Vale.Ponto.model.address.AddressForClient;
+import com.map.Vale.Ponto.model.address.AddressDTO;
 import com.map.Vale.Ponto.model.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,13 +30,13 @@ public class Company {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "cnpj")
+    @Column(name = "cnpj", nullable = false, unique = true)
     private String cnpj;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -55,12 +55,10 @@ public class Company {
     private LocalDateTime lastModifiedDate;
 
     public Company(CompanyRequestDTO dto) {
-
         this.name = dto.getName();
         this.cnpj = dto.getCnpj();
-        this.address = dto.getAddress();
+        this.address = new Address(dto.getAddress());
         this.email = dto.getEmail();
-
     }
 
     public void updateFromRequest(CompanyRequestDTO dto) {
@@ -72,15 +70,14 @@ public class Company {
             this.cnpj = dto.getCnpj();
         }
         if (dto.getAddress() != null) {
-            this.address = dto.getAddress();
+            this.address = new Address(dto.getAddress());
         }
         if (dto.getAddress() != null) {
-            this.address.update(new AddressForClient(dto.getAddress()));
+            this.address.update(new AddressDTO(new Address(dto.getAddress())));
         }
         if (dto.getEmail() != null) {
             this.email = dto.getEmail();
         }
 
     }
-
 }

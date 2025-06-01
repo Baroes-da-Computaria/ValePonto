@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -25,17 +26,15 @@ public class ProductController {
         this.productService = productServices;
     }
 
+    @GetMapping(value = "/{id}")
     @Operation(summary = "Buscar Product por id", description = "Retorna o Product com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Product não encontrado com id: {id}"),
             @ApiResponse(responseCode = "200", description = "Detalhes do Product encontrados"),
     })
-    @GetMapping(value = "/{id}")
     public ResponseEntity<ProductResponseDTO> getById(@PathVariable("id") Long id) {
-
         var response = productService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
     }
 
     @GetMapping
@@ -65,43 +64,30 @@ public class ProductController {
             @ApiResponse(responseCode = "409",description = "Product com esse nome já existe")
 
     })
-    public ResponseEntity<ProductDetailsDTO> create(@RequestBody ProductRequestDTO dto) {
-
+    public ResponseEntity<ProductDetailsDTO> create(@Valid @RequestBody ProductRequestDTO dto) {
         var response = productService.save(dto);
-
-        // retorna o product response
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PutMapping(
-            value = "/{id}/{id_company}"
-    )
+    @PutMapping(value = "/{id}/{id_company}")
     @Operation(summary = "Atualizar informações de um Product existente", description = "Atualiza as informações de um Product existente com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Product não encontrado com id: {id}"),
     })
-    public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id,@PathVariable Long id_company, @RequestBody ProductRequestDTO dto) {
-
+    public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id,@PathVariable Long id_company,@Valid @RequestBody ProductRequestDTO dto) {
         var response = productService.update(id, id_company, dto);
-
-        // retorna o curso response
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
     }
 
+    @DeleteMapping(value = "/{id}")
     @Operation(summary = "Excluir um Product existente", description = "Exclui um Product com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Product não encontrado com id: {id}"),
             @ApiResponse(responseCode = "400", description = "Falha de integridade referencial"),
             @ApiResponse(responseCode = "204", description = "Product excluído com sucesso")
     })
-    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
-
-        // chama o service para deletar o product
         productService.delete(id);
-
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 }

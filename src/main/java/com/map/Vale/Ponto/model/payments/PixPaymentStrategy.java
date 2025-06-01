@@ -35,7 +35,6 @@ public class PixPaymentStrategy implements PaymentStrategy {
 
     @Override
     public void processPayment(PaymentRequestDTO dto){
-        // processar o order
         var order = orderService.createBuilder(dto.getClient_id(), dto.getAddressForOrder(), dto.getProductIdToQuantity());
         process(order);
     }
@@ -53,10 +52,7 @@ public class PixPaymentStrategy implements PaymentStrategy {
         payment.setAmount(order.getTotal());
         payment.setPixCode(pixCode); // campo extra específico do PIX
 
-        // Salva no banco
         paymentRepository.save(payment);
-
-        System.out.println("Pagamento via PIX criado. QR Code: " + pixCode);
     }
 
     public void confirmPayment(Long orderId){

@@ -10,18 +10,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductResponseDTO {
-
     private String name;
     private String category;
     private Double price;
     private String imageURL;
 
     public ProductResponseDTO(Product product) {
-
         this.name = product.getName();
         this.category = product.getCategory();
         this.price = product.getPrice();
         this.imageURL = product.getImageURL();
-
     }
 }

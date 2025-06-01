@@ -31,12 +31,9 @@ public class OrderController {
             @ApiResponse(responseCode = "200", description = "Detalhes do Order encontrados"),
     })
     public ResponseEntity<OrderResponseDTO> getById(@PathVariable("id") Long id) {
-
         var response = orderService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
     }
-
 
     @GetMapping
     @Operation(summary = "Listar todos os Orders", description = "Retorna uma lista paginada de todos os Orders.")
@@ -59,33 +56,15 @@ public class OrderController {
 
     }
 
-//    @PostMapping
-//    @Operation(summary = "Criar um novo Orders", description = "Cria um novo Orders com base nos dados fornecidos.")
-//    @ApiResponses(value = {
-//            //@ApiResponse(responseCode = "409",description = "Product com esse nome já existe")
-//
-//    })
-//    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO dto) {
-//
-//        var order = orderService.createBuilder(dto.getClientId(),dto.getClientForOrder(), dto.getProducts());
-//        return ResponseEntity.status(HttpStatus.CREATED).body(order);
-//
-//    }
-
-
+    @DeleteMapping(value = "/{id}")
     @Operation(summary = "Excluir um Order existente", description = "Exclui um Order com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Order não encontrado com id: {id}"),
             @ApiResponse(responseCode = "400", description = "Falha de integridade referencial"),
             @ApiResponse(responseCode = "204", description = "Orders excluído com sucesso")
     })
-    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
-
-        // chama o service para deletar o product
         orderService.delete(id);
-
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
     }
 }

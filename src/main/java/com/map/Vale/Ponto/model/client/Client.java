@@ -38,10 +38,10 @@ public class Client {
     @Column(name = "cpf", nullable = false, unique = true)
     private String cpf;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, unique = true)
     private String password;
 
-    @Column(name = "telefone", nullable = false)
+    @Column(name = "telefone", nullable = false, unique = true)
     private String telefone;
 
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -90,5 +90,4 @@ public class Client {
         }
 
     }
-
 }

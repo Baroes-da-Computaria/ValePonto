@@ -1,12 +1,11 @@
 package com.map.Vale.Ponto.services;
 
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.map.Vale.Ponto.controllers.error.ResourceNotFoundException;
-import com.map.Vale.Ponto.enums.PaymentMethods;
 import com.map.Vale.Ponto.model.command.ConfirmPayment;
-import com.map.Vale.Ponto.model.order.Order;
-import com.map.Vale.Ponto.model.payments.*;
-import com.map.Vale.Ponto.repositories.OrderRepository;
+import com.map.Vale.Ponto.model.payments.PaymentDetailsDTO;
+import com.map.Vale.Ponto.model.payments.PaymentRequestDTO;
+import com.map.Vale.Ponto.model.payments.PaymentStrategy;
+import com.map.Vale.Ponto.model.payments.PaymentStrategyFactory;
 import com.map.Vale.Ponto.repositories.PaymentRepository;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +32,11 @@ public class PaymentService {
     }
 
     public PaymentDetailsDTO findById(Long id) {
-
-        var payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Payment não encontrado com id: " + id));
+        var payment = paymentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Payment não encontrado com id: " + id));
         return new PaymentDetailsDTO(payment);
-
     }
 
-    public void confirmPayment(Long orderId){
+    public void confirmPayment(Long orderId) {
         confirmPayment.execute(orderId);
     }
 }

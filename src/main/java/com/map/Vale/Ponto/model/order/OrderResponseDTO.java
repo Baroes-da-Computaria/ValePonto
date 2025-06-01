@@ -15,17 +15,13 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponseDTO {
-
     private Long client_id;
     private List<OrderItemDTO> orders = new ArrayList<>();
     private BigDecimal total;
 
     public OrderResponseDTO(Order entity) {
-
         this.client_id = entity.getClient().getId();
         this.orders = entity.getItems().stream().map(OrderItemDTO::new).collect(Collectors.toList());
         this.total = entity.getTotal();
-
     }
-
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class CreditCardInfoDTO {
     private String cardNumber;
     private String holderName;
-    private String expiry; // MM/YY
+    private String expiry;
     private String cvv;
 }
 

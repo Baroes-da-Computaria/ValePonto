@@ -15,14 +15,11 @@ public class PaymentStrategyFactory {
     }
 
     public PaymentStrategy getStrategy(PaymentMethods methods) {
-
         PaymentStrategy strategy = strategies.get(methods.name());
         if (strategy == null) {
             throw new IllegalArgumentException("Método de pagamento não suportado: " + methods.name());
         }
         return strategy;
-
     }
-
 }
 

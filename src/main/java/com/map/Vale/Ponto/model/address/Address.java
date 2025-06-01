@@ -60,7 +60,7 @@ public class Address {
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 
-    public Address(AddressForClient address) {
+    public Address(AddressDTO address) {
         this.cep = address.getCep();
         this.state = address.getState();
         this.city = address.getCity();
@@ -76,7 +76,7 @@ public class Address {
         this.number = address.getNumber();
     }
 
-    public void update(AddressForClient entity) {
+    public void update(AddressDTO entity) {
 
         if (entity.getCep() != null) {
             this.cep = entity.getCep();
@@ -95,5 +95,4 @@ public class Address {
         }
 
     }
-
 }

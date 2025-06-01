@@ -57,11 +57,9 @@ public class Order {
     private LocalDateTime lastModifiedDate;
 
     public void calculateTotal() {
-
         this.total = items.stream()
                 .map(OrderItem::getSubtotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-
     }
 }
 

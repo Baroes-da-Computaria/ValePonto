@@ -10,14 +10,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderItemDTO {
-
     private Long product_id;
     private Integer quantity;
 
     public OrderItemDTO(OrderItem orderItem) {
-
         this.product_id = orderItem.getProduct().getId();
         this.quantity = orderItem.getQuantity();
-
     }
 }

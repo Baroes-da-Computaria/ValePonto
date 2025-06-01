@@ -55,7 +55,7 @@ public class Payment {
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 
-    // Campo específico do pagamento PIX
+    @Column(name = "pix_code")
     private String pixCode;
 
     public void confirmPayment() {
@@ -66,5 +66,4 @@ public class Payment {
     public void failPayment() {
         this.status = PaymentStatus.FAILED;
     }
-
 }

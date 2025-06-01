@@ -11,6 +11,7 @@ import com.map.Vale.Ponto.repositories.CompanyRepository;
 import com.map.Vale.Ponto.repositories.ProductRepository;
 import com.map.Vale.Ponto.validador.ValidadorCriacaoProduct;
 
+import com.map.Vale.Ponto.validador.ValidadorUpdateProduct;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,73 +22,54 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ValidadorCriacaoProduct validadorCriacaoProduct;
     private final CompanyRepository companyRepository;
+    private final ValidadorCriacaoProduct validadorCriacaoProduct;
+    private final ValidadorUpdateProduct validadorUpdateProduct;
 
     public ProductService(ProductRepository productRepository,
+                          CompanyRepository companyRepository,
                           ValidadorCriacaoProduct validadorCriacaoProduct,
-                          CompanyRepository companyRepository
+                          ValidadorUpdateProduct validadorUpdateProduct
     ) {
         this.productRepository = productRepository;
-        this.validadorCriacaoProduct = validadorCriacaoProduct;
         this.companyRepository = companyRepository;
+        this.validadorCriacaoProduct = validadorCriacaoProduct;
+        this.validadorUpdateProduct = validadorUpdateProduct;
     }
 
     @Transactional(readOnly = true)
     public Page<ProductResponseDTO> findAll(Pageable pageable) {
-
         return productRepository.findAll(pageable).map(ProductResponseDTO::new);
-
     }
 
     @Transactional(readOnly = true)
     public ProductResponseDTO findById(Long id) {
-
-        var product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado com id: " + id));
-
+        var product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado com id: " + id));
         return new ProductResponseDTO(product);
-
     }
 
     @Transactional
     public ProductDetailsDTO save(ProductRequestDTO dto) {
-
         var product = new Product(dto);
-
-        // validacao da criação do product
         validadorCriacaoProduct.validar(product, dto.getCompanyId());
-
-        // busca no banco de dados a company pelo id
         Company company = companyRepository.getReferenceById(dto.getCompanyId());
-
-        // Associa o product a company(consistencia na persistencia)
         product.setCompany(company);
         company.getProducts().add(product);
-
-        // retorna o curso salvo
         var saved = productRepository.save(product);
         return new ProductDetailsDTO(saved);
-
     }
 
     @Transactional
-    public ProductResponseDTO update(Long id,Long id_company, ProductRequestDTO dto) {
-
-        var product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado com id: " + id));
-
-        // todo: validadorUpdateProduct
-
+    public ProductResponseDTO update(Long productId,Long companyId, ProductRequestDTO dto) {
+        var product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado com id: " + productId));
+        validadorUpdateProduct.validar(product.getName(),companyId, dto);
         product.updateFromRequest(dto);
         var updated = productRepository.save(product);
         return new ProductResponseDTO(updated);
-
     }
 
     @Transactional
     public void delete(Long id) {
-
         if (!productRepository.existsById(id)) {
             throw new ResourceNotFoundException("Produto não encontrado com id: " + id);
         }
@@ -96,7 +78,5 @@ public class ProductService {
         } catch (DataIntegrityViolationException e) {
             throw new DataBaseException("Falha de integridade referencial");
         }
-
     }
-
 }

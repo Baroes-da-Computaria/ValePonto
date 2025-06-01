@@ -16,10 +16,8 @@ public class ValidadorCriacaoOrder {
     }
 
     public void validar(Long clientId, Map<String, Integer> productIdToQuantity) {
-
         validarExistenciaClient(clientId);
         validarOrdemItem(productIdToQuantity);
-
     }
 
     private void validarOrdemItem(Map<String, Integer> productIdToQuantity) {
@@ -37,19 +35,14 @@ public class ValidadorCriacaoOrder {
                 throw new IllegalArgumentException("Invalid quantity for product ID: " + entry.getKey());
             }
         }
-
     }
 
     private void validarExistenciaClient(Long clientId) {
-
         if (clientId == null) {
             throw new IllegalArgumentException("Client ID cannot be null");
         }
         if (!clientRepository.existsById(clientId)) {
-            throw new ResourceNotFoundException(
-                    "Client com id " + clientId + " não foi encontrado.");
+            throw new ResourceNotFoundException("Client com id " + clientId + " não foi encontrado.");
         }
-
     }
-
 }

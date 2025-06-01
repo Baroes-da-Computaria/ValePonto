@@ -1,6 +1,5 @@
 package com.map.Vale.Ponto.services;
 
-import com.map.Vale.Ponto.model.client.ClientResponseDTO;
 import com.map.Vale.Ponto.model.payments.PaymentRequestDTO;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +25,7 @@ public class ProcessPaymentService {
     }
 
     public void processOrder(PaymentRequestDTO dto) {
-
-        // processa o pagamento
         paymentService.process(dto);
-
         //notificationService.sendEmailConfirmation(order);
-
     }
-
 }

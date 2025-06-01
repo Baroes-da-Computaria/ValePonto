@@ -3,7 +3,6 @@ package com.map.Vale.Ponto.services;
 import com.map.Vale.Ponto.controllers.error.DataBaseException;
 import com.map.Vale.Ponto.controllers.error.ResourceNotFoundException;
 import com.map.Vale.Ponto.model.address.Address;
-import com.map.Vale.Ponto.model.address.AddressForClient;
 import com.map.Vale.Ponto.model.address.AddressForOrder;
 import com.map.Vale.Ponto.model.client.Client;
 import com.map.Vale.Ponto.model.order.Order;
@@ -54,19 +53,13 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public OrderResponseDTO findById(Long id) {
-
-        var Order = orderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Order não encontrado com id: " + id));
-
+        var Order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order não encontrado com id: " + id));
         return new OrderResponseDTO(Order);
-
     }
 
     @Transactional(readOnly = true)
     public Page<OrderResponseDTO> findAll(PageRequest pageable) {
-
         return orderRepository.findAll(pageable).map(OrderResponseDTO::new);
-
     }
 
     @Transactional
@@ -77,8 +70,7 @@ public class OrderService {
         validadorCriacaoAddress.validar(address);
 
         // find the client by id
-        Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Client não encontrado com id: " + clientId));
+        Client client = clientRepository.findById(clientId).orElseThrow(() -> new ResourceNotFoundException("Client não encontrado com id: " + clientId));
 
         // create a new orderBuilder using OrderBuilder
         OrderBuilder orderBuilder = new OrderBuilder();
@@ -96,12 +88,10 @@ public class OrderService {
         // build the order from the orderBuilder
         Order order = orderBuilder.build();
         return orderRepository.save(order);
-
     }
 
     @Transactional
     public void delete(Long id) {
-
         if (!orderRepository.existsById(id)) {
             throw new ResourceNotFoundException("Order não encontrado com id: " + id);
         }
@@ -110,6 +100,5 @@ public class OrderService {
         } catch (DataIntegrityViolationException e) {
             throw new DataBaseException("Falha de integridade referencial");
         }
-
     }
 }

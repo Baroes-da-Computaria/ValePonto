@@ -28,16 +28,13 @@ public class PointService {
         this.orderRepository = orderRepository;
     }
 
-    // Add methods to handle business logic related to points
     public void addPoints(Long clientId,Long order_id) {
-
         var client = clientRepository.findById(clientId).orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
         var order = orderRepository.findById(order_id).orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + order_id));
         validar(client, order);
         var totalPontos = calculateTotalPoints(order);
         var points = new Points(order, totalPontos);
         pointsRepository.save(points);
-
     }
 
     private Long calculateTotalPoints(Order order) {
@@ -52,6 +49,6 @@ public class PointService {
         if(!Objects.equals(order.getClient().getId(), client.getId())) {
             throw new ResourceNotFoundException("Client with id: " + client.getId() + " does not match the order's client id: " + order.getClient().getId());
         }
-        // validar se esse payment já foi pago
+        // todo validar se esse payment já foi pago
     }
 }

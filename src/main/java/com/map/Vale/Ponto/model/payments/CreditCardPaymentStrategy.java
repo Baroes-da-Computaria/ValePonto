@@ -1,5 +1,6 @@
 package com.map.Vale.Ponto.model.payments;
 
+import com.map.Vale.Ponto.controllers.error.BusinessException;
 import com.map.Vale.Ponto.enums.PaymentMethods;
 import com.map.Vale.Ponto.model.order.Order;
 import com.map.Vale.Ponto.repositories.PaymentRepository;
@@ -36,19 +37,9 @@ public class CreditCardPaymentStrategy implements PaymentStrategy {
 
     private void process(Order order, CreditCardInfoDTO cardInfo, Long pontosParaTrocar) {
 
-        // Validação básica
-        if (!cardInfo.getCardNumber().matches("\\d{16}")) {
-            throw new IllegalArgumentException("Número do cartão inválido");
-        }
+        isValidCardNumber(cardInfo);
+        isAutorizado(cardInfo);
 
-        // Simulação de autorização
-        boolean autorizado = simularAutorizacao(cardInfo);
-
-        if (!autorizado) {
-            throw new RuntimeException("Transação recusada pela operadora");
-        }
-
-        // Cria o pagamento
         Payment payment = new Payment();
         payment.setOrder(order);
         payment.setMethod(PaymentMethods.CREDIT_CARD);
@@ -58,13 +49,23 @@ public class CreditCardPaymentStrategy implements PaymentStrategy {
         payment.confirmPayment();
         paymentRepository.save(payment);
 
-        // Adiciona pontos ao cliente
         pointService.addPoints(order.getClient().getId(), order.getId());
 
     }
 
+    private void isAutorizado(CreditCardInfoDTO cardInfo) {
+        if (!simularAutorizacao(cardInfo)) {
+            throw new BusinessException("Transação recusada pela operadora");
+        }
+    }
+
+    private static void isValidCardNumber(CreditCardInfoDTO cardInfo) {
+        if (!cardInfo.getCardNumber().matches("\\d{16}")) {
+            throw new IllegalArgumentException("Número do cartão inválido");
+        }
+    }
+
     private boolean simularAutorizacao(CreditCardInfoDTO card) {
-        // Simulação simples: se CVV termina com par, autoriza
         return Integer.parseInt(card.getCvv()) % 2 == 0;
     }
 

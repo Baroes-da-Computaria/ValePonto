@@ -8,6 +8,8 @@ import com.map.Vale.Ponto.model.points.Points;
 import com.map.Vale.Ponto.repositories.ClientRepository;
 import com.map.Vale.Ponto.repositories.OrderRepository;
 import com.map.Vale.Ponto.repositories.PointsRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -36,6 +38,11 @@ public class PointService {
         var totalPontos = calculateTotalPoints(order);
         var points = new Points(client, totalPontos);
         pointsRepository.save(points);
+    }
+
+    public Page<Points> findAllByClientId(Long clientId, Pageable pageable) {
+        var client = clientRepository.findById(clientId).orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
+        return pointsRepository.findAllByClientId(client.getId(), pageable);
     }
 
     private Long calculateTotalPoints(Order order) {

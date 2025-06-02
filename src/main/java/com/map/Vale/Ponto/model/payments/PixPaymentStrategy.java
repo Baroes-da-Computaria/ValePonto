@@ -50,6 +50,7 @@ public class PixPaymentStrategy implements PaymentStrategy {
         var clientId = order.getClient().getId();
         var amount = calcularValorCompra.execute(clientId, order.getTotal(), pontosParaTrocar);
         payment.setAmount(amount);
+        payment.setPixCode(pixCode);
         paymentRepository.save(payment);
     }
 

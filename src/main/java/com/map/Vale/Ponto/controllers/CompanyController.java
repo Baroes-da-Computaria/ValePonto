@@ -60,7 +60,9 @@ public class CompanyController {
     @PostMapping
     @Operation(summary = "Criar uma nova Company", description = "Cria um nova Company com base nos dados fornecidos.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "409", description = "Company com esse nome já existe")
+            @ApiResponse(responseCode = "409", description = "Company com esse {nome} já existe"),
+            @ApiResponse(responseCode = "409", description = "Company com esse {cnpj} já existe"),
+            @ApiResponse(responseCode = "404", description = "CEP {cep} não encontrado")
 
     })
     public ResponseEntity<CompanyResponseDTO> create(@Valid @RequestBody CompanyRequestDTO dto) {
@@ -72,6 +74,9 @@ public class CompanyController {
     @Operation(summary = "Atualizar informações de uma Company existente", description = "Atualiza as informações de um Company existente com base no ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Company não encontrada com id: {id}"),
+            @ApiResponse(responseCode = "409", description = "Company com esse {nome} já existe"),
+            @ApiResponse(responseCode = "409", description = "Company com esse {cnpj} já existe"),
+            @ApiResponse(responseCode = "404", description = "CEP {cep} não encontrado")
     })
     public ResponseEntity<CompanyResponseDTO> update(@PathVariable("id") Long id,@Valid @RequestBody CompanyRequestDTO dto) {
         var response = companyService.update(id, dto);

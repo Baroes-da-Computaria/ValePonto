@@ -25,7 +25,7 @@ public class ConfirmPayment implements Command {
 
     @Override
     public void execute(){
-        Payment payment = paymentRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Pagamento não encontrado"));
+        Payment payment = paymentRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Payment não encontrado com id: "+ orderId));
         validar(payment);
         payment.confirmPayment();
         paymentRepository.save(payment);

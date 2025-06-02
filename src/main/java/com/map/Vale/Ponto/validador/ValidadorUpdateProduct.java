@@ -27,7 +27,7 @@ public class ValidadorUpdateProduct {
     }
     private void validarExistenciaCompany(Long companyId) {
         companyRepository.findById(companyId).orElseThrow(() ->
-                new ResourceNotFoundException("Company com id " + companyId + " não encontrada.")
+                new ResourceNotFoundException("Company não encontrado com id: " + companyId)
         );
     }
 

@@ -26,7 +26,7 @@ public class OrderController {
     @GetMapping(value = "/{id}")
     @Operation(summary = "Buscar Order por id", description = "Retorna o Order com base no ID fornecido.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "404", description = "Client não encontrado com id: {id}"),
+            @ApiResponse(responseCode = "404", description = "Order não encontrado com id: {id}"),
             @ApiResponse(responseCode = "200", description = "Detalhes do Order encontrados"),
     })
     public ResponseEntity<OrderResponseDTO> getById(@PathVariable("id") Long id) {

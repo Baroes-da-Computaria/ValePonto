@@ -83,8 +83,8 @@ public class ClientService {
 
     @Transactional
     public void atualizarEndereco(Long id, AddressDTO dto) {
-        validadorAtualizarEndereco.validar(id, dto);
-        var client = clientRepository.getReferenceById(id);
+        var client = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client não encontrado com id: " + id));
+        validadorAtualizarEndereco.validar(dto);
         var address = client.getAddress();
         address.update(dto);
         clientRepository.save(client);

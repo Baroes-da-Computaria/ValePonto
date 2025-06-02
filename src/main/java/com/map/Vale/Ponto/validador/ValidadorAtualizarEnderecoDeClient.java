@@ -20,20 +20,13 @@ public class ValidadorAtualizarEnderecoDeClient {
         this.viaCepValidator = viaCepValidator;
     }
     
-    public void validar(Long id, AddressDTO address) {
-        validarExistenciaCLient(id);
+    public void validar(AddressDTO address) {
         validarExistenciaCep(address.getCep());
     }
 
     private void validarExistenciaCep(String cep) {
         if (!viaCepValidator.isValid(cep)) {
             throw new ResourceNotFoundException("CEP " + cep + " não encontrado");
-        }
-    }
-
-    private void validarExistenciaCLient(Long id) {
-        if(!clientRepository.existsById(id)){
-            throw new ResourceNotFoundException("Client com id "+ id + " não encontrado");
         }
     }
 }

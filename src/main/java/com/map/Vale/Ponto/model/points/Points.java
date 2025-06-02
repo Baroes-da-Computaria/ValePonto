@@ -26,9 +26,8 @@ public class Points {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
+    @Column(name = "client_id", updatable = false)
+    private Long clientId;
 
     @Column(name = "total_points")
     private Long totalPoints;
@@ -41,7 +40,7 @@ public class Points {
     private LocalDateTime expirationDate;
 
     public Points(Client client, Long totalPontos) {
-        this.client = client;
+        this.clientId = client.getId();
         this.totalPoints = totalPontos;
     }
 
